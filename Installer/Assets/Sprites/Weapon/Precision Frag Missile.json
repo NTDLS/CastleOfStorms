@@ -1,0 +1,23 @@
+{
+  "Name": "Precision Frag Missile",
+  "Description": "",
+  "SoundPath": "Sounds\\Weapons\\Precision Frag Missile.wav",
+  "SpritePaths": ["Sprites\\Weapon\\Precision Frag Missile.png"],
+  "SoundVolumne": 0.4,
+
+  "MunitionType": "Locking",
+  
+  "Damage": 8,
+  "FireDelayMilliseconds": 800,
+  "Speed": 9.75,
+  "SpeedVariancePercent": 0.10,
+
+  "MinLockDistance": 100,
+  "MaxLockDistance": 1000,
+  "MaxLocks": 1,
+  "MaxLockOnAngle": 45,
+  "ExplodesOnImpact": true,
+  
+  "GuidanceAngle": 90,
+  "GuidanceRotation": 8  
+}

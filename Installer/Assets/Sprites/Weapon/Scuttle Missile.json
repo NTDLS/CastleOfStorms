@@ -1,0 +1,23 @@
+{
+  "Name": "Scuttle Missile Missile",
+  "Description": "",
+  "SoundPath": "Sounds\\Weapons\\Scuttle Missile.wav",
+  "SpritePaths": ["Sprites\\Weapon\\Scuttle Missile.png"],
+  "SoundVolumne": 0.4,
+  
+  "MunitionType": "Locking",
+
+  "Damage": 10,
+  "FireDelayMilliseconds": 1000,
+  "Speed": 9,
+  "SpeedVariancePercent": 0.10,
+  "ExplodesOnImpact": true,
+  
+  "MinLockDistance": 100,
+  "MaxLockDistance": 600,
+  "MaxLocks": 2,
+  "MaxLockOnAngle": 40,
+ 
+  "GuidanceAngle": 90,
+  "GuidanceRotation": 3
+}

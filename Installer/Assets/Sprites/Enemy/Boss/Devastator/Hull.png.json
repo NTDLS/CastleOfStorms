@@ -1,0 +1,48 @@
+{
+  "Name":"Devastator",
+  "Description": "TODO: Add a description",
+  "MunitionDetection": true,
+  "Speed": 2.0,
+  "Mass": 200,
+  "Hull": 200,
+  "Shields": 100,
+  "Bounty": 50,
+  "Weapons": [],
+  "Attachments": [
+    {
+      "Type": "SpriteEnemyBossDevastatorLeftCannon",
+      "X": 65,
+      "Y": 8
+    },
+    {
+      "Type": "SpriteEnemyBossDevastatorRightCannon",
+      "X": 65,
+      "Y": 75
+    },
+    {
+      "Type": "SpriteEnemyBossDevastatorLeftGun",
+      "X": 90,
+      "Y": 20
+    },
+    {
+      "Type": "SpriteEnemyBossDevastatorRightGun",
+      "X": 90,
+      "Y": 63
+    },
+    {
+      "Type": "SpriteEnemyBossDevastatorTurret",
+      "X": 35,
+      "Y": 40
+    },
+    {
+      "Type": "SpriteEnemyBossDevastatorLeftJet",
+      "X": -40,
+      "Y": 24
+    },
+	{
+      "Type": "SpriteEnemyBossDevastatorRightJet",
+      "X": -40,
+      "Y": 57
+    }
+  ]  
+}

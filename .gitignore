@@ -1,0 +1,14 @@
+
+\.vs/
+\bin/
+\obj/
+\packages/
+
+*.user
+
+*.exe
+
+*.rez
+*.tmp
+
+Si.Game/Properties/launchSettings.json

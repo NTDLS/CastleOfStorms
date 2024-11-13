@@ -1,0 +1,60 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33829.357
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cos.Library", "CoS.Library\Cos.Library.csproj", "{990E2120-BC2B-4C6D-A1B0-663A7D88A2EC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Installer", "Installer", "{AB4BD3BA-2122-4876-8FD5-3AF65A233D1A}"
+	ProjectSection(SolutionItems) = preProject
+		Installer\Setup.Iss = Installer\Setup.Iss
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cos.Rendering", "CoS.Rendering\Cos.Rendering.csproj", "{2A08F5C6-8A24-4F37-A90E-83C0DA604C7A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cos.Audio", "CoS.Audio\Cos.Audio.csproj", "{310CBE99-7666-4A1F-BCE4-96C9EE4E0C71}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DirectX", "DirectX", "{E1544675-32D3-4A56-8D92-1F6264A8F147}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cos.Client", "CoS.Client\Cos.Client.csproj", "{1CE2CAE3-1522-4AD8-AF32-BFAEC6069069}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cos.Engine", "CoS.Engine\Cos.Engine.csproj", "{7816F662-44AA-4B79-BFF5-2FCB1983AD17}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{990E2120-BC2B-4C6D-A1B0-663A7D88A2EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{990E2120-BC2B-4C6D-A1B0-663A7D88A2EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{990E2120-BC2B-4C6D-A1B0-663A7D88A2EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{990E2120-BC2B-4C6D-A1B0-663A7D88A2EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A08F5C6-8A24-4F37-A90E-83C0DA604C7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A08F5C6-8A24-4F37-A90E-83C0DA604C7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A08F5C6-8A24-4F37-A90E-83C0DA604C7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A08F5C6-8A24-4F37-A90E-83C0DA604C7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{310CBE99-7666-4A1F-BCE4-96C9EE4E0C71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{310CBE99-7666-4A1F-BCE4-96C9EE4E0C71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{310CBE99-7666-4A1F-BCE4-96C9EE4E0C71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{310CBE99-7666-4A1F-BCE4-96C9EE4E0C71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CE2CAE3-1522-4AD8-AF32-BFAEC6069069}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CE2CAE3-1522-4AD8-AF32-BFAEC6069069}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CE2CAE3-1522-4AD8-AF32-BFAEC6069069}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CE2CAE3-1522-4AD8-AF32-BFAEC6069069}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7816F662-44AA-4B79-BFF5-2FCB1983AD17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7816F662-44AA-4B79-BFF5-2FCB1983AD17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7816F662-44AA-4B79-BFF5-2FCB1983AD17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7816F662-44AA-4B79-BFF5-2FCB1983AD17}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2A08F5C6-8A24-4F37-A90E-83C0DA604C7A} = {E1544675-32D3-4A56-8D92-1F6264A8F147}
+		{310CBE99-7666-4A1F-BCE4-96C9EE4E0C71} = {E1544675-32D3-4A56-8D92-1F6264A8F147}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {99D468A4-85E5-41AA-912F-A2435A154952}
+	EndGlobalSection
+EndGlobal

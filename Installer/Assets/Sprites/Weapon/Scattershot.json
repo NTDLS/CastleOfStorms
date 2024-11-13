@@ -1,0 +1,18 @@
+{
+  "Name": "Scattershot",
+  "Description": "",
+  "MunitionType": "Projectile",
+  "SoundPath": "Sounds\\Weapons\\Scattershot.wav",
+  "SpritePaths": [
+	"Sprites\\Weapon\\Scattershot0.png",
+	"Sprites\\Weapon\\Scattershot1.png",
+	"Sprites\\Weapon\\Scattershot2.png",
+	"Sprites\\Weapon\\Scattershot3.png"
+  ],
+  "SoundVolumne": 0.2,
+  "Damage": 1,
+  "FireDelayMilliseconds": 25,
+  "Speed": 11.25,
+  "AngleVarianceDegrees": 8,
+  "SpeedVariancePercent": 0.10
+}

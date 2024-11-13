@@ -1,0 +1,7 @@
+{
+  "FrameHeight": 256,
+  "FrameWidth": 256,
+  "FramesPerSecond": 50,
+  "DeleteAfterPlay": "true",
+  "PlayMode": "Single"
+}

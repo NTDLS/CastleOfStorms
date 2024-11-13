@@ -1,0 +1,13 @@
+{
+  "Name": "Lancer",
+  "Description": "",
+  "MunitionType": "Energy",
+  "SoundPath": "Sounds\\Weapons\\Lancer.wav",
+  "SpritePaths": ["Sprites\\Weapon\\Lancer.png"],
+  
+  "SoundVolumne": 0.4,
+  "Speed": 26.25,
+  "Damage": 15,
+  "FireDelayMilliseconds": 100,
+  "AngleVarianceDegrees": 2.0
+}

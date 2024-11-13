@@ -1,0 +1,14 @@
+{
+  "Description": "",
+  "MunitionDetection": true,
+  "Hull": 200,
+  "Mass": 15,
+  "Shields": 0,
+  "Bounty": 50,
+  "Weapons": [
+	{
+	  "Type": "WeaponThunderstrikeMissile",
+	  "MunitionCount": 2147483647
+	}
+	]
+}

@@ -1,0 +1,13 @@
+{
+  "Name": "Vulcan Cannon",
+  "Description": "",
+  "MunitionType": "Projectile",
+  "SoundPath": "Sounds\\Weapons\\Vulcan Cannon.wav",
+  "SpritePaths": ["Sprites\\Weapon\\Vulcan Cannon.png"],
+  "SoundVolumne": 0.4,
+  "Damage": 2,
+  "FireDelayMilliseconds": 25,
+  "Speed": 15,
+  "AngleVarianceDegrees": 1.5,
+  "SpeedVariancePercent": 0.05
+}

@@ -1,0 +1,8 @@
+{
+  "Speed": 0,
+  "Hull": 1000,
+  "Mass": 50,
+  "Bounty": 1000,
+  "MunitionDetection": true,
+  "CollisionDetection": true
+}

@@ -1,0 +1,11 @@
+{
+  "Description": "→ Concept Starbase ←\nTODO: Add a description\n",
+  "MunitionDetection": false,
+  "Speed": 0.0,
+  "MaxThrottle": 0.0,
+  "Mass": 200,
+  "Hull": 200,
+  "Shields": 100,
+  "Bounty": 50,
+  "Weapons": [],
+}

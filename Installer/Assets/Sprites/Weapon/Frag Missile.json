@@ -1,0 +1,20 @@
+{
+  "Name": "Frag Missile",
+  "Description": "",
+  "SoundPath": "Sounds\\Weapons\\Frag Missile.wav",
+  "SpritePaths": ["Sprites\\Weapon\\Frag Missile.png"],
+  "SoundVolumne": 0.4,
+
+  "MunitionType": "Seeking",
+
+  "Damage": 10,
+  "Speed": 8.25,
+  "ExplodesOnImpact": true,
+  "FireDelayMilliseconds": 250,
+  "AngleVarianceDegrees": 0,
+  "SpeedVariancePercent": 0.10,
+  
+  "GuidanceAngle": 20,
+  "GuidanceDistance": 1000,
+  "GuidanceRotation": 4
+}

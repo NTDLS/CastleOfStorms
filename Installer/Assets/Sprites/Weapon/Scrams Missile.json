@@ -1,0 +1,24 @@
+{
+  "Name": "Scrams Missile",
+  "Description": "",
+  "SoundPath": "Sounds\\Weapons\\Scrams Missile.wav",
+  "SpritePaths": ["Sprites\\Weapon\\Scrams Missile.png"],
+  
+  "SoundVolumne": 0.4,
+
+  "MunitionType": "Locking",
+
+  "Damage": 5,
+  "FireDelayMilliseconds": 500,
+  "Speed": 8.25,
+  "SpeedVariancePercent": 0.10,
+
+  "MinLockDistance": 50,
+  "MaxLockDistance": 1500,
+  "MaxLocks": 8,
+  "MaxLockOnAngle": 50,
+  "ExplodesOnImpact": true,
+  
+  "GuidanceAngle": 90,
+  "GuidanceRotation": 10
+}

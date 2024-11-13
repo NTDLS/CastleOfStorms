@@ -1,0 +1,19 @@
+{
+  "Name": "Thunderstrike Missile",
+  "Description": "",
+  "SoundPath": "Sounds\\Weapons\\Thunderstrike Missile.wav",
+  "SpritePaths": ["Sprites\\Weapon\\Thunderstrike Missile.png"],
+  "SoundVolumne": 0.4,
+  
+  "MunitionType": "Seeking",
+  
+  "Damage": 20,
+  "FireDelayMilliseconds": 250,
+  "Speed": 11.25,
+  "SpeedVariancePercent": 0.10,
+  "ExplodesOnImpact": true,
+  
+  "GuidanceAngle": 20,
+  "GuidanceDistance": 1000,
+  "GuidanceRotation": 4
+}

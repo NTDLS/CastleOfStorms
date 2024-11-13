@@ -1,0 +1,13 @@
+{
+  "Name": "Photon Torpedo",
+  "Description": "",
+  "MunitionType": "Energy",
+  "SoundPath": "Sounds\\Weapons\\Photon Torpedo.wav",
+  "SpritePaths": ["Sprites\\Weapon\\Photon Torpedo.png"],
+  "SoundVolumne": 0.4,
+  "Damage": 500,
+  "FireDelayMilliseconds": 1000,
+  "Speed": 18.75,
+  "AngleVarianceDegrees": 0.00,
+  "SpeedVariancePercent": 0.00
+}

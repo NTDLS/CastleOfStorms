@@ -1,0 +1,13 @@
+{
+  "Description": "",
+  "Hull": 50,
+  "Mass": 15,
+  "Shields": 0,
+  "Bounty": 50,
+  "Weapons": [
+	{
+	  "Type": "WeaponVulcanCannon",
+	  "MunitionCount": 2147483647
+	}
+	]
+}

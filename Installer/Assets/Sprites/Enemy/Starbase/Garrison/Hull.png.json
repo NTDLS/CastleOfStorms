@@ -1,0 +1,58 @@
+{
+  "Description": "→ Garrison ←\nTODO: Add a description\n",
+  "MunitionDetection": true,
+  "Speed": 0.0,
+  "MaxThrottle": 0.0,
+  "Mass": 200,
+  "Hull": 200,
+  "Shields": 100,
+  "Bounty": 50,
+  "Weapons": [],
+  "Attachments": [
+    {
+      "Type": "SpriteEnemyStarbaseGarrisonTurret",
+      "X": 563,
+      "Y": 151
+    },
+    {
+      "Type": "SpriteEnemyStarbaseGarrisonTurret",
+      "X": 563,
+      "Y": 372
+    },
+    {
+      "Type": "SpriteEnemyStarbaseGarrisonTurret",
+      "X": 567,
+      "Y": 668
+    },
+    {
+      "Type": "SpriteEnemyStarbaseGarrisonTurret",
+      "X": 563,
+      "Y": 964
+    },
+    {
+      "Type": "SpriteEnemyStarbaseGarrisonTurret",
+      "X": 563,
+      "Y": 1186
+    },
+    {
+      "Type": "SpriteEnemyStarbaseGarrisonTurret",
+      "X": 58,
+      "Y": 368
+    },
+    {
+      "Type": "SpriteEnemyStarbaseGarrisonTurret",
+      "X": 55,
+      "Y": 969
+    },
+    {
+      "Type": "SpriteEnemyStarbaseGarrisonTurret",
+      "X": 1067,
+      "Y": 365
+    },
+    {
+      "Type": "SpriteEnemyStarbaseGarrisonTurret",
+      "X": 1070,
+      "Y": 971
+    }
+  ]  
+}

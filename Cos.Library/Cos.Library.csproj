@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Title>StrikeforceInfinite.Shared</Title>
+    <Company>NetworkDLS</Company>
+    <Copyright>Copyright © 2024 NetworkDLS</Copyright>
+    <AssemblyVersion>0.0.37</AssemblyVersion>
+    <FileVersion>0.0.37</FileVersion>
+    <VersionPrefix>0.0.37</VersionPrefix>
+    <Authors>NetworkDLS</Authors>
+    
+    <OutputType>Library</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="NTDLS.Helpers" Version="1.2.9" />
+    <PackageReference Include="NTDLS.Semaphore" Version="3.4.2" />
+  </ItemGroup>
+</Project>

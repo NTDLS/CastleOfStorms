@@ -1,0 +1,23 @@
+{
+  "Description": "",
+  "Hull": 200,
+  "Mass": 15,
+  "Shields": 0,
+  "Bounty": 50,
+  "OrientationType": "Independent",
+  "PositionType": "FixedToOwner",
+  "Weapons": [
+	{
+	  "Type": "WeaponVulcanCannon",
+	  "MunitionCount": 2147483647
+	},
+	{
+	  "Type": "WeaponLancer",
+	  "MunitionCount": 2147483647
+	},
+	{
+	  "Type": "WeaponThunderstrikeMissile",
+	  "MunitionCount": 2147483647
+	}
+	]
+}

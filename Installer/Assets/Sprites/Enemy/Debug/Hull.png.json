@@ -1,0 +1,20 @@
+{
+  "Description": "",
+  "Speed": 3.5,
+  "MaxThrottle": 1.5,
+  "Hull": 100000,
+  "MunitionDetection": true,
+  "Shields": 10,
+  "Bounty": 10,
+  "Weapons": [
+	{
+	  "Type": "WeaponVulcanCannon",
+	  "MunitionCount": 2147483647
+	},
+	{
+	  "Type": "WeaponDualVulcanCannon",
+	  "MunitionCount": 2147483647
+	}
+	],
+  "Attachments": []
+}
