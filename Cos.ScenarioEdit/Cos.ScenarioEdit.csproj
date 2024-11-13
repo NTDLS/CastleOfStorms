@@ -7,11 +7,19 @@
     <ApplicationIcon>RougueQuest.ico</ApplicationIcon>
     <AssemblyName>ScenarioEdit</AssemblyName>
     <RootNamespace>ScenarioEdit</RootNamespace>
+    <Nullable>enable</Nullable>
+
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="NPOI" Version="2.7.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CoS.Engine\Cos.Engine.csproj" />
+    <ProjectReference Include="..\CoS.Library\Cos.Library.csproj" />
+    <ProjectReference Include="..\CoS.Rendering\Cos.Rendering.csproj" />
   </ItemGroup>
 
   <ItemGroup>

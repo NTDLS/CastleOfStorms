@@ -244,7 +244,7 @@ namespace Cos.Engine
             string playerStatsText =
                  $"      Hull: {player.HullHealth:n0} (Shields: {player.ShieldHealth:n0}) | Bounty: ${player.Metadata.Bounty}\r\n";
 
-            playerStatsText += $"{_engine.Display.FrameCounter.AverageFrameRate:n2}fps";
+            //playerStatsText += $"{_engine.Display.FrameCounter.AverageFrameRate:n2}fps";
 
             _engine.Sprites.TextBlocks.PlayerStatsText.Text = playerStatsText;
 

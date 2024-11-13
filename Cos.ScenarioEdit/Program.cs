@@ -14,7 +14,17 @@ namespace ScenarioEdit
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormMain());
+
+            var screen = Screen.FromPoint(Cursor.Position);
+
+            try
+            {
+                Application.Run(new FormMain(screen));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An unhandled exception occurred:\n {ex?.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

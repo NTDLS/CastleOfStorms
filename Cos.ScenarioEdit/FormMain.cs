@@ -1,8 +1,11 @@
-﻿using ScenarioEdit.Properties;
+﻿using Cos.Engine;
+using Cos.ScenarioEdit.Hardware;
+using NTDLS.Helpers;
+using ScenarioEdit.Tiling;
 using System;
-using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using static Cos.Library.CosConstants;
 
 namespace ScenarioEdit
 {
@@ -10,57 +13,57 @@ namespace ScenarioEdit
     {
         private Random Rand = new Random();
 
-        /// <summary>"
-        /// The action that will be performed when clicking the left mouse button.
-        /// </summary>
-        public enum PrimaryMode
-        {
-            Insert,
-            Select,
-            Shape
-        }
-
-        public enum ShapeFillMode
-        {
-            Insert,
-            Delete,
-            Select,
-        }
-
-        //public UndoBuffer _undoBuffer { get; set; }
-        private bool _firstShown = true;
-        private bool _hasBeenModified = false;
-        private string _currentMapFilename = string.Empty;
-        private int _newFilenameIncrement = 1;
-        private ToolTip _interrogationTip = new ToolTip();
-        private Rectangle? _shapeSelectionRect = null;
-        private ImageList _assetBrowserImageList = new ImageList();
-        private Point _lastMouseLocation = new Point();
-        private string _partialTilesPath = "Tiles\\";
-
-
-        //This really shouldn't be necessary! :(
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                //Paints all descendants of a window in bottom-to-top painting order using double-buffering.
-                // For more information, see Remarks. This cannot be used if the window has a class style of either CS_OWNDC or CS_CLASSDC. 
-                CreateParams handleParam = base.CreateParams;
-                handleParam.ExStyle |= 0x02000000; //WS_EX_COMPOSITED       
-                return handleParam;
-            }
-        }
+        private readonly EngineCore _engine;
 
         public FormMain()
         {
             InitializeComponent();
+
+            var drawingSurface = new Control();
+            Controls.Add(drawingSurface);
+            _engine = new EngineCore(drawingSurface, CosEngineInitializationType.None);
+        }
+
+        public FormMain(Screen screen)
+        {
+            InitializeComponent();
+
+            treeViewTiles.ImageList = TreeNodeFactory.AssetBrowserImageList;
+
+            SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.Opaque | ControlStyles.ResizeRedraw | ControlStyles.UserPaint, true);
+
+            var settings = EngineCore.LoadSettings();
+
+            this.CenterFormOnScreen(screen, settings.Resolution);
+
+            var drawingSurface = new Control
+            {
+                Dock = DockStyle.Fill
+            };
+            splitContainerBody.Panel1.Controls.Add(drawingSurface);
+
+            _engine = new EngineCore(drawingSurface, CosEngineInitializationType.Edit);
+
+            _engine.OnShutdown += (EngineCore sender) =>
+            {   //If the engine is stopped, close the main form.
+                Invoke((MethodInvoker)delegate
+                {
+                    Close();
+                });
+            };
+
+            Shown += (object? sender, EventArgs e)
+                => _engine.StartEngine();
+
+            FormClosed += (sender, e)
+                => _engine.ShutdownEngine();
+
+            drawingSurface.GotFocus += (object? sender, EventArgs e) => _engine.Display.SetIsDrawingSurfaceFocused(true);
+            drawingSurface.LostFocus += (object? sender, EventArgs e) => _engine.Display.SetIsDrawingSurfaceFocused(false);
         }
 
         private void FormMain_Load(object sender, EventArgs e)
         {
-            //splitContainerBody.Panel1.Controls.Add(drawingsurface);
-
             /*
             drawingsurface.Dock = DockStyle.Fill;
             drawingsurface.BackColor = Color.FromArgb(60, 60, 60);
@@ -75,45 +78,68 @@ namespace ScenarioEdit
             drawingsurface.Select();
             drawingsurface.Focus();
             */
-        
+
             //_undoBuffer = new UndoBuffer(_core);
 
             PopulateMaterials();
         }
 
-        private void TreeViewTiles_BeforeExpand(object sender, TreeViewCancelEventArgs e)
-        {
-            if (e.Node.Nodes.Count == 1 && e.Node.Nodes[0].Text == "<dummy>")
-            {
-                e.Node.Nodes.Clear();
-                PopChildNodes(e.Node, e.Node.FullPath);
-            }
-        }
-
         void PopulateMaterials()
         {
-            /*
-            _assetBrowserImageList.Images.Add("<folder>", Resources.AssetTreeView_Folder);
+            string assetsPath = @"C:\NTDLS\CastleOfStorms\Installer\Assets";
 
-            treeViewTiles.ImageList = _assetBrowserImageList;
-
-            foreach (string d in Directory.GetDirectories(Constants.BaseCommonAssetPath + _partialTilesPath))
+            foreach (string d in Directory.GetDirectories(assetsPath))
             {
-                if (Utility.IgnoreFileName(d))
+                if (Path.GetFileName(d).StartsWith('@'))
                 {
                     continue;
                 }
-                var directory = Path.GetFileName(d);
 
-                var directoryNode = treeViewTiles.Nodes.Add(_partialTilesPath + directory, directory, "<folder>");
-                directoryNode.Nodes.Add("<dummy>");
+                AddAssetDirectory(d);
             }
-            */
         }
 
+
+        private void AddAssetDirectory(string directory, TreeNode? parentNode = null)
+        {
+            if (File.Exists(Path.Combine(directory, "tilepack.json")))
+            {
+                //This is a tile pack.
+                AddTilePack(parentNode.EnsureNotNull(), directory);
+            }
+            else if (File.Exists(Path.Combine(directory, "metadata.json")))
+            {
+                //This folder contains individual tiles.
+            }
+            else
+            {
+                //This is just a folder.
+
+                var thisFolder = TreeNodeFactory.CreateTreeNodeFolder(directory);
+                (parentNode?.Nodes ?? treeViewTiles.Nodes).Add(thisFolder);
+
+                foreach (string d in Directory.GetDirectories(directory))
+                {
+                    if (Path.GetFileName(d).StartsWith('@'))
+                    {
+                        continue;
+                    }
+
+                    AddAssetDirectory(d, thisFolder);
+                }
+            }
+        }
+
+        private void AddTilePack(TreeNode parentNode, string path)
+        {
+            var tilePackNode = TreeNodeFactory.CreateTreeNodeTilePack(path);
+            parentNode.Nodes.Add(tilePackNode);
+        }
+
+        /*
         public void PopChildNodes(TreeNode parent, string partialPath)
         {
-            /*
+
             foreach (string d in Directory.GetDirectories(Constants.BaseCommonAssetPath + _partialTilesPath + partialPath))
             {
                 var directory = Path.GetFileName(d);
@@ -140,7 +166,7 @@ namespace ScenarioEdit
 
                 parent.Nodes.Add(fileKey, Path.GetFileNameWithoutExtension(file.Name), fileKey, fileKey);
             }
-            */
         }
+        */
     }
 }
