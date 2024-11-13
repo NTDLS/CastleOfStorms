@@ -21,9 +21,6 @@ namespace Cos.Engine
         private bool _shutdown = false;
         private bool _isPaused = false;
         private readonly Thread _graphicsThread;
-        private readonly TrackableQueue<TickControllerMethod>? _worldClockSubPool;
-
-        private readonly DelegateThreadPool _worldClockThreadPool;
 
         private struct TickControllerMethod
         {
@@ -43,20 +40,8 @@ namespace Cos.Engine
         public EngineWorldClock(EngineCore engine)
         {
             _engine = engine;
-            _worldClockThreadPool = new(engine.Settings.WorldClockThreads);
-
-            engine.OnShutdown += (sender) =>
-            {
-                _worldClockThreadPool.Stop();
-            };
 
             _graphicsThread = new Thread(GraphicsThreadProc);
-
-            if (_engine.Settings.MultithreadedWorldClock)
-            {
-                //Create a collection of threads so we can wait on the ones that we start.
-                _worldClockSubPool ??= _worldClockThreadPool.CreateChildQueue<TickControllerMethod>();
-            }
 
             #region Cache vectored and unvectored tick controller methods.
 
@@ -113,8 +98,8 @@ namespace Cos.Engine
         {
             _isPaused = !_isPaused;
 
-            _engine.Sprites.TextBlocks.PausedText.X = _engine.Display.NaturalScreenSize.Width / 2 - _engine.Sprites.TextBlocks.PausedText.Size.Width / 2;
-            _engine.Sprites.TextBlocks.PausedText.Y = _engine.Display.NaturalScreenSize.Height / 2 - _engine.Sprites.TextBlocks.PausedText.Size.Height / 2;
+            _engine.Sprites.TextBlocks.PausedText.X = _engine.Display.CanvasSize.Width / 2 - _engine.Sprites.TextBlocks.PausedText.Size.Width / 2;
+            _engine.Sprites.TextBlocks.PausedText.Y = _engine.Display.CanvasSize.Height / 2 - _engine.Sprites.TextBlocks.PausedText.Size.Height / 2;
             _engine.Sprites.TextBlocks.PausedText.Visible = _isPaused;
         }
 
@@ -169,8 +154,6 @@ namespace Cos.Engine
 
         private CosVector ExecuteWorldClockTick(float epoch)
         {
-            _engine.Settings.MultithreadedWorldClock = false;
-
             //This is where we execute the world clock for each type of object.
             //Note that this function does employ threads but I DO NOT believe it is necessary for performance.
             //
@@ -185,51 +168,17 @@ namespace Cos.Engine
 
             var displacementVector = _engine.Player.ExecuteWorldClockTick(epoch);
 
-            //Enqueue each vectored tick controller for a thread.
             var vectoredParameters = new object[] { epoch, displacementVector };
-            if (_worldClockSubPool != null)
-            {
-                foreach (var vectored in _vectoredTickControllers)
-                {
-                    _worldClockSubPool.Enqueue(vectored,
-                        (TickControllerMethod p) => p.Method.Invoke(p.Controller, vectoredParameters));
-                }
 
-                //Wait on all enqueued threads to complete.
-                if (!CosUtility.TryAndIgnore(_worldClockSubPool.WaitForCompletion))
-                {
-                    return displacementVector; //This is kind of an exception, it likely means that the engine is shutting down - so just return.
-                }
-            }
-            else
+            foreach (var vectored in _vectoredTickControllers)
             {
-                foreach (var vectored in _vectoredTickControllers)
-                {
-                    vectored.Method.Invoke(vectored.Controller, vectoredParameters);
-                }
+                vectored.Method.Invoke(vectored.Controller, vectoredParameters);
             }
 
             //After all vectored tick controllers have executed, run the unvectored tick controllers.
-            if (_worldClockSubPool != null)
+            foreach (var vectored in _unvectoredTickControllers)
             {
-                foreach (var unvectored in _unvectoredTickControllers)
-                {
-                    _worldClockSubPool.Enqueue(unvectored,
-                        (TickControllerMethod p) => p.Method.Invoke(p.Controller, null));
-                }
-
-                //Wait on all enqueued threads to complete.
-                if (!CosUtility.TryAndIgnore(_worldClockSubPool.WaitForCompletion))
-                {
-                    return displacementVector; //This is kind of an exception, it likely means that the engine is shutting down - so just return.
-                }
-            }
-            else
-            {
-                foreach (var vectored in _unvectoredTickControllers)
-                {
-                    vectored.Method.Invoke(vectored.Controller, null);
-                }
+                vectored.Method.Invoke(vectored.Controller, null);
             }
 
             _engine.Sprites.HardDeleteAllQueuedDeletions();

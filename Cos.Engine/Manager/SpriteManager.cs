@@ -7,7 +7,6 @@ using Cos.Library;
 using Cos.Library.Mathematics;
 using NTDLS.Helpers;
 using SharpCompress;
-using SharpDX.Mathematics.Interop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -249,22 +248,14 @@ namespace Cos.Engine.Manager
             return sprite;
         }
 
-        public void RenderPostScaling(SharpDX.Direct2D1.RenderTarget renderTarget)
-        {
-            foreach (var sprite in _collection.Where(o => o.Visible == true && o.RenderScaleOrder == CosRenderScaleOrder.PostScale).OrderBy(o => o.Z))
-            {
-                sprite.Render(renderTarget);
-            }
-        }
-
         /// <summary>
         /// Will render the current game state to a single bitmap. If a lock cannot be acquired
         /// for drawing then the previous frame will be returned.
         /// </summary>
         /// <returns></returns>
-        public void RenderPreScaling(SharpDX.Direct2D1.RenderTarget renderTarget)
+        public void Render(SharpDX.Direct2D1.RenderTarget renderTarget)
         {
-            foreach (var sprite in _collection.Where(o => o.Visible == true && o.RenderScaleOrder == CosRenderScaleOrder.PreScale).OrderBy(o => o.Z))
+            foreach (var sprite in _collection.Where(o => o.Visible == true).OrderBy(o => o.Z))
             {
                 if (sprite.IsWithinCurrentScaledScreenBounds)
                 {
@@ -273,15 +264,6 @@ namespace Cos.Engine.Manager
             }
 
             _engine.Player.Sprite?.Render(renderTarget);
-
-            if (_engine.Settings.HighlightNaturalBounds)
-            {
-                var naturalScreenBounds = _engine.Display.NaturalScreenBounds;
-                var rawRectF = new RawRectangleF(naturalScreenBounds.Left, naturalScreenBounds.Top, naturalScreenBounds.Right, naturalScreenBounds.Bottom);
-
-                //Highlight the 1:1 frame
-                _engine.Rendering.DrawRectangle(renderTarget, rawRectF, _engine.Rendering.Materials.Colors.Red, 0, 1, 0);
-            }
         }
 
         public void CreateFragmentsOf(SpriteBase sprite)

@@ -22,7 +22,6 @@ namespace Cos.Engine.Sprite._Superclass._Root
             _engine = engine;
 
             SpriteTag = spriteTag;
-            IsHighlighted = _engine.Settings.HighlightAllSprites;
             Orientation = new CosVector();
         }
 
@@ -39,8 +38,8 @@ namespace Cos.Engine.Sprite._Superclass._Root
         /// </summary>
         public void CenterInUniverse()
         {
-            X = _engine.Display.TotalCanvasSize.Width / 2 /*- Size.Width / 2*/;
-            Y = _engine.Display.TotalCanvasSize.Height / 2 /*- Size.Height / 2*/;
+            X = _engine.Display.CanvasSize.Width / 2 /*- Size.Width / 2*/;
+            Y = _engine.Display.CanvasSize.Height / 2 /*- Size.Height / 2*/;
         }
 
         public void SetHullHealth(int points)
@@ -99,39 +98,5 @@ namespace Cos.Engine.Sprite._Superclass._Root
 
             _engine.Sprites.QueueAllForDeletionByOwner(UID);
         }
-
-        public string GetInspectionText()
-        {
-            string extraInfo = string.Empty;
-
-            return
-                  $">                    UID: {UID}\r\n"
-                + $"               Owner UID: {OwnerUID:n0}\r\n"
-                + $"                    Type: {GetType().Name}\r\n"
-                + $"                     Tag: {SpriteTag:n0}\r\n"
-                + $"             Is Visible?: {Visible:n0}\r\n"
-                + $"                    Size: {Size:n0}\r\n"
-                + $"                  Bounds: {Bounds:n0}\r\n"
-                + $"       Ready for Delete?: {IsQueuedForDeletion}\r\n"
-                + $"                Is Dead?: {IsDeadOrExploded}\r\n"
-                + $"         Render-Location: {RenderLocation}\r\n"
-                + $"                Location: {Location}\r\n"
-                + $"                   Angle: {Orientation}\r\n"
-                + $"                          {Orientation.DegreesSigned:n2}deg\r\n"
-                + $"                          {Orientation.RadiansSigned:n2}rad\r\n"
-                + extraInfo
-                + $"       Background Offset: {_engine.Display.RenderWindowPosition}\r\n"
-                + $"                  Thrust: {MovementVector * 100:n2}\r\n"
-                + $"                   Boost: {Throttle * 100:n2}\r\n"
-                + $"                    Hull: {HullHealth:n0}\r\n"
-                + $"                  Shield: {ShieldHealth:n0}\r\n"
-                + $"               Highlight: {IsHighlighted}\r\n"
-                + $"       Is Fixed Position: {IsFixedPosition}\r\n"
-                //+ $"            Is Locked On: {IsLockedOnHard}\r\n"
-                //+ $"     Is Locked On (Soft): {IsLockedOnSoft:n0}\r\n"
-                + $"In Current Scaled Bounds: {IsWithinCurrentScaledScreenBounds}\r\n"
-                + $"          Visible Bounds: {Bounds}\r\n";
-        }
-
     }
 }

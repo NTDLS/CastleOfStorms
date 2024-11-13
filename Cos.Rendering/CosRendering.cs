@@ -36,10 +36,10 @@ namespace Cos.Rendering
         private Size _totalCanvasSize;
         private Size _drawingSurfaceSize;
 
-        public CosRendering(CosEngineSettings settings, Control drawingSurface, Size totalCanvasSize)
+        public CosRendering(CosEngineSettings settings, Control drawingSurface, Size canvasSize)
         {
             _drawingSurfaceSize = drawingSurface.Size;
-            _totalCanvasSize = totalCanvasSize;
+            _totalCanvasSize = canvasSize;
 
             var presentOptions = PresentOptions.Immediately;
             var antiAliasMode = AntialiasMode.Aliased;

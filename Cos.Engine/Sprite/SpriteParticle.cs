@@ -161,12 +161,6 @@ namespace Cos.Engine.Sprite
                             RenderLocation.X, RenderLocation.Y, Size.Width, Size.Height, Color, 1, (float)Orientation.Degrees);
                         break;
                 }
-
-                if (IsHighlighted)
-                {
-                    _engine.Rendering.DrawRectangle(renderTarget, RawRenderBounds,
-                        _engine.Rendering.Materials.Colors.Red, 0, 1, Orientation.RadiansSigned);
-                }
             }
         }
     }

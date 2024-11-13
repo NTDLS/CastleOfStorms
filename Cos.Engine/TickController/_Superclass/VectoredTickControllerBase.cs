@@ -79,8 +79,8 @@ namespace Cos.Engine.TickController._Superclass
         public T AddAtCenterUniverse()
         {
             T obj = (T)Activator.CreateInstance(typeof(T), Engine).EnsureNotNull();
-            obj.X = Engine.Display.TotalCanvasSize.Width / 2;
-            obj.Y = Engine.Display.TotalCanvasSize.Height / 2;
+            obj.X = Engine.Display.CanvasSize.Width / 2;
+            obj.Y = Engine.Display.CanvasSize.Height / 2;
 
             SpriteManager.Add(obj);
             return obj;
@@ -89,8 +89,8 @@ namespace Cos.Engine.TickController._Superclass
         public T AddAtCenterUniverse(string bitmapPath)
         {
             T obj = (T)Activator.CreateInstance(typeof(T), Engine, bitmapPath).EnsureNotNull();
-            obj.X = Engine.Display.TotalCanvasSize.Width / 2;
-            obj.Y = Engine.Display.TotalCanvasSize.Height / 2;
+            obj.X = Engine.Display.CanvasSize.Width / 2;
+            obj.Y = Engine.Display.CanvasSize.Height / 2;
 
             SpriteManager.Add(obj);
             return obj;

@@ -29,15 +29,8 @@ namespace Cos.Client
             checkBoxPlayMusic.Checked = settings.PlayMusic;
             checkBoxEnableAntiAliasing.Checked = settings.AntiAliasing;
             checkBoxEnableVerticalSync.Checked = settings.VerticalSync;
-            checkBoxAutoZoomWhenMoving.Checked = settings.EnableSpeedScaleFactoring;
-            checkBoxHighlightAllSprites.Checked = settings.HighlightAllSprites;
-            checkBoxHighlightNaturalBounds.Checked = settings.HighlightNaturalBounds;
-            checkBoxEnableSpriteInterrogation.Checked = settings.EnableSpriteInterrogation;
             checkBoxPreCacheAllAssets.Checked = settings.PreCacheAllAssets;
             textBoxTargetFrameRate.Text = $"{settings.TargetFrameRate:n0}";
-            textBoxOverdrawScale.Text = $"{settings.OverdrawScale:n0}";
-            textBoxInitialFrameStarCount.Text = $"{settings.InitialFrameStarCount:n0}";
-            textBoxDeltaFrameTargetStarCount.Text = $"{settings.DeltaFrameTargetStarCount:n0}";
 
             if (checkBoxEnableVerticalSync.Checked)
             {
@@ -142,22 +135,14 @@ namespace Cos.Client
                 settings.PlayMusic = checkBoxPlayMusic.Checked;
                 settings.VerticalSync = checkBoxEnableVerticalSync.Checked;
                 settings.AntiAliasing = checkBoxEnableAntiAliasing.Checked;
-                settings.EnableSpeedScaleFactoring = checkBoxAutoZoomWhenMoving.Checked;
-                settings.HighlightAllSprites = checkBoxHighlightAllSprites.Checked;
-                settings.HighlightNaturalBounds = checkBoxHighlightNaturalBounds.Checked;
-                settings.EnableSpriteInterrogation = checkBoxEnableSpriteInterrogation.Checked;
                 settings.PreCacheAllAssets = checkBoxPreCacheAllAssets.Checked;
 
                 settings.TargetFrameRate = GetAndValidate(textBoxTargetFrameRate, 10, settings.WorldTicksPerSecond, "Frame Limiter");
-                settings.OverdrawScale = GetAndValidate(textBoxOverdrawScale, 1.0f, 10.0f, "Overdraw scale");
-                settings.InitialFrameStarCount = GetAndValidate(textBoxInitialFrameStarCount, 0, 1000, "Initial frame star count");
-                settings.DeltaFrameTargetStarCount = GetAndValidate(textBoxDeltaFrameTargetStarCount, 0, 1000, "Delta-frame target star count");
 
                 int baseX = _screen.Bounds.Width - (int)((float)_screen.Bounds.Width * (1.0 - ((float)trackBarResolution.Value / (float)MAX_RESOLUTIONS)));
                 int baseY = _screen.Bounds.Height - (int)((float)_screen.Bounds.Height * (1.0 - ((float)trackBarResolution.Value / (float)MAX_RESOLUTIONS)));
                 settings.Resolution = new System.Drawing.Size(baseX, baseY);
 
-                settings.FullScreen = (trackBarResolution.Value == MAX_RESOLUTIONS);
 
                 var graphicsAdapter = comboBoxGraphicsAdapter.SelectedItem as CosGraphicsAdapter;
                 if (graphicsAdapter == null)

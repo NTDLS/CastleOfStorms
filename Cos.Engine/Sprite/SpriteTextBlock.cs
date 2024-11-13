@@ -4,7 +4,6 @@ using SharpDX.Direct2D1;
 using SharpDX.DirectWrite;
 using SharpDX.Mathematics.Interop;
 using System.Drawing;
-using static Cos.Library.CosConstants;
 
 namespace Cos.Engine.Sprite
 {
@@ -42,7 +41,6 @@ namespace Cos.Engine.Sprite
         public SpriteTextBlock(EngineCore engine, TextFormat format, SolidColorBrush color, CosVector location, bool isFixedPosition)
             : base(engine)
         {
-            RenderScaleOrder = CosRenderScaleOrder.PostScale;
             IsFixedPosition = isFixedPosition;
             Location = new CosVector(location);
             Color = color;
@@ -53,20 +51,20 @@ namespace Cos.Engine.Sprite
         public void SetTextAndCenterXY(string text)
         {
             Text = text;
-            X = _engine.Display.NaturalScreenSize.Width / 2 - Size.Width / 2;
-            Y = _engine.Display.NaturalScreenSize.Height / 2 - Size.Height / 2;
+            X = _engine.Display.CanvasSize.Width / 2 - Size.Width / 2;
+            Y = _engine.Display.CanvasSize.Height / 2 - Size.Height / 2;
         }
 
         public void SetTextAndCenterY(string text)
         {
             Text = text;
-            Y = _engine.Display.NaturalScreenSize.Height / 2 - Size.Height / 2;
+            Y = _engine.Display.CanvasSize.Height / 2 - Size.Height / 2;
         }
 
         public void SetTextAndCenterX(string text)
         {
             Text = text;
-            X = _engine.Display.NaturalScreenSize.Width / 2 - Size.Width / 2;
+            X = _engine.Display.CanvasSize.Width / 2 - Size.Width / 2;
         }
 
         public override void Render(RenderTarget renderTarget)

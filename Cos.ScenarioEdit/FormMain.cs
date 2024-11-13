@@ -1,4 +1,5 @@
 ﻿using Cos.Engine;
+using Cos.Engine.Sprite;
 using Cos.ScenarioEdit.Hardware;
 using NTDLS.Helpers;
 using ScenarioEdit.Tiling;
@@ -14,14 +15,15 @@ namespace ScenarioEdit
         private Random Rand = new Random();
 
         private readonly EngineCore _engine;
+        private readonly Control _drawingSurface;
 
         public FormMain()
         {
             InitializeComponent();
 
-            var drawingSurface = new Control();
-            Controls.Add(drawingSurface);
-            _engine = new EngineCore(drawingSurface, CosEngineInitializationType.None);
+            _drawingSurface = new Control();
+            Controls.Add(_drawingSurface);
+            _engine = new EngineCore(_drawingSurface, CosEngineInitializationType.None);
         }
 
         public FormMain(Screen screen)
@@ -36,13 +38,13 @@ namespace ScenarioEdit
 
             this.CenterFormOnScreen(screen, settings.Resolution);
 
-            var drawingSurface = new Control
+            _drawingSurface = new Control
             {
                 Dock = DockStyle.Fill
             };
-            splitContainerBody.Panel1.Controls.Add(drawingSurface);
+            splitContainerBody.Panel1.Controls.Add(_drawingSurface);
 
-            _engine = new EngineCore(drawingSurface, CosEngineInitializationType.Edit);
+            _engine = new EngineCore(_drawingSurface, CosEngineInitializationType.Edit);
 
             _engine.OnShutdown += (EngineCore sender) =>
             {   //If the engine is stopped, close the main form.
@@ -58,8 +60,8 @@ namespace ScenarioEdit
             FormClosed += (sender, e)
                 => _engine.ShutdownEngine();
 
-            drawingSurface.GotFocus += (object? sender, EventArgs e) => _engine.Display.SetIsDrawingSurfaceFocused(true);
-            drawingSurface.LostFocus += (object? sender, EventArgs e) => _engine.Display.SetIsDrawingSurfaceFocused(false);
+            _drawingSurface.GotFocus += (object? sender, EventArgs e) => _engine.Display.SetIsDrawingSurfaceFocused(true);
+            _drawingSurface.LostFocus += (object? sender, EventArgs e) => _engine.Display.SetIsDrawingSurfaceFocused(false);
         }
 
         private void FormMain_Load(object sender, EventArgs e)
@@ -79,9 +81,23 @@ namespace ScenarioEdit
             drawingsurface.Focus();
             */
 
+            _drawingSurface.MouseClick += _drawingSurface_MouseClick;
+
             //_undoBuffer = new UndoBuffer(_core);
 
             PopulateMaterials();
+        }
+
+        private void _drawingSurface_MouseClick(object? sender, MouseEventArgs e)
+        {
+            var spriteTile = new SpriteTile(_engine, @"Tiles\Overworld\Dirt\Center\1.png");
+
+            //spriteTile.X = 500;
+            //spriteTile.Y = 500;
+
+            _engine.Sprites.Add(spriteTile);
+
+            spriteTile.CenterInUniverse();
         }
 
         void PopulateMaterials()
@@ -98,7 +114,6 @@ namespace ScenarioEdit
                 AddAssetDirectory(d);
             }
         }
-
 
         private void AddAssetDirectory(string directory, TreeNode? parentNode = null)
         {

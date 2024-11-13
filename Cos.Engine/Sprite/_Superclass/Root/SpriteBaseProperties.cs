@@ -4,7 +4,6 @@ using Cos.Library.Mathematics;
 using Cos.Library.Sprite;
 using SharpDX.Mathematics.Interop;
 using System.Drawing;
-using static Cos.Library.CosConstants;
 
 namespace Cos.Engine.Sprite._Superclass._Root
 {
@@ -91,7 +90,6 @@ namespace Cos.Engine.Sprite._Superclass._Root
         public uint UID { get; private set; } = CosSequenceGenerator.Next();
         public uint OwnerUID { get; set; }
         public bool IsWithinCurrentScaledScreenBounds => _engine.Display.GetCurrentScaledScreenBounds().IntersectsWith(RenderBounds);
-        public bool IsHighlighted { get; set; } = false;
         public int HullHealth { get; private set; } = 0; //Ship hit-points.
         public int ShieldHealth { get; private set; } = 0; //Shield hit-points, these take 1/2 damage.
 
@@ -110,12 +108,6 @@ namespace Cos.Engine.Sprite._Superclass._Root
         /// Width and height of the sprite.
         /// </summary>
         public virtual Size Size => _size;
-
-        /// <summary>
-        /// Whether the sprite is rendered before speed based scaling.
-        /// Note that pre-scaled sprite X,Y is the top, left of the natural screen bounds.
-        /// </summary>
-        public CosRenderScaleOrder RenderScaleOrder { get; set; } = CosRenderScaleOrder.PreScale;
 
         /// <summary>
         /// The bounds of the sprite in the universe.

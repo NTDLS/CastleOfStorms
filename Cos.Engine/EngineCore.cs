@@ -75,7 +75,7 @@ namespace Cos.Engine
             Settings = LoadSettings();
 
             Display = new DisplayManager(this, drawingSurface);
-            Rendering = new CosRendering(Settings, drawingSurface, Display.TotalCanvasSize);
+            Rendering = new CosRendering(Settings, drawingSurface, Display.CanvasSize);
             Assets = new AssetManager(this);
             Events = new EventTickController(this);
             Sprites = new SpriteManager(this);
@@ -150,22 +150,13 @@ namespace Cos.Engine
                             o.IntermediateRenderTarget.Clear(Rendering.Materials.Colors.EditorBackground);
                         }
 
-                        Sprites.RenderPreScaling(o.IntermediateRenderTarget);
+                        Sprites.Render(o.IntermediateRenderTarget);
 
                         o.IntermediateRenderTarget.EndDraw();
 
                         o.ScreenRenderTarget.BeginDraw();
 
-                        if (Settings.EnableSpeedScaleFactoring)
-                        {
-                            Rendering.TransferWithZoom(o.IntermediateRenderTarget, o.ScreenRenderTarget, (float)Display.SpeedOrientedFrameScalingFactor());
-                        }
-                        else
-                        {
-                            Rendering.TransferWithZoom(o.IntermediateRenderTarget, o.ScreenRenderTarget, (float)Display.BaseDrawScale);
-                        }
-
-                        Sprites.RenderPostScaling(o.ScreenRenderTarget);
+                        Rendering.TransferWithZoom(o.IntermediateRenderTarget, o.ScreenRenderTarget, 1.0f);
 
                         o.ScreenRenderTarget.EndDraw();
                     }

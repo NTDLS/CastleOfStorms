@@ -7,7 +7,7 @@
 
         public ComboItem(T value)
         {
-            Text = value.ToString();
+            Text = value?.ToString() ?? string.Empty;
             Value = value;
         }
 
