@@ -18,8 +18,8 @@ namespace Cos.Engine.Manager
         {
             _engine = engine;
 
-            Click = _engine.Assets.GetAudio(@"Sounds\Other\Click.wav", 0.70f, false);
-            BackgroundMusicSound = _engine.Assets.GetAudio(@"Sounds\Music\Background.wav", 0.25f, true);
+            //Click = _engine.Assets.GetAudio(@"Sounds\Other\Click.wav", 0.70f, false);
+            //BackgroundMusicSound = _engine.Assets.GetAudio(@"Sounds\Music\Background.wav", 0.25f, true);
         }
 
         public void PlayRandomShieldHit()

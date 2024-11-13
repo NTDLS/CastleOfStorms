@@ -1,0 +1,42 @@
+{
+  "Name": "Dirt",
+  "CollectionId": "686eb789-80b2-477f-9991-caa7fe4a52b7",
+  "Thumbnail": "@Thumbnail.png",
+  "Top": [
+    "Top\\1.png",
+    "Top\\2.png"
+  ],
+  "Bottom": [
+    "Bottom\\1.png",
+    "Bottom\\2.png"
+  ],
+  "Left": [
+    "Left\\1.png",
+    "Left\\2.png"
+  ],
+  "Right": [
+    "Right\\1.png",
+    "Right\\2.png"
+  ],
+  "Center": [
+    "Center\\1.png",
+    "Center\\2.png",
+    "Center\\3.png"
+  ],
+  "TopRight": [
+    "TopRight\\1.png",
+    "TopRight\\2.png"
+  ],
+  "TopLeft": [
+    "TopLeft\\1.png",
+    "TopLeft\\2.png"
+  ],
+  "BottomRight": [
+    "BottomRight\\1.png",
+    "BottomRight\\2.png"
+  ],
+  "BottomLeft": [
+    "BottomLeft\\1.png",
+    "BottomLeft\\2.png"
+  ]
+}

@@ -1,5 +1,0 @@
-{
-  "ActorClass": "ActorTerrain",
-  "CanWalkOk": "True",
-  "SnapToGrid": "True"
-}
