@@ -1,0 +1,11 @@
+{
+  "Name":"Summon Monster I",
+  "TargetType":"Terrain",
+  "Effects":[ {"EffectType":"SummonMonster"} ],
+  "Value": "3",
+  "CastTime":"3",
+  "Charges":"10",
+  "AnimationImagePath":"Animations/Spells/SkullSmoke2_192_256",
+  "Prevalence":"8",
+  "Level":"1"
+}

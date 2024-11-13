@@ -1,0 +1,16 @@
+{
+  "Name":"Valors Shield",
+  "Value": "500",
+  "Weight":"5200",
+  "Bulk":"36000",
+  "Prevalence":"12",
+  "Effects":[
+    {"EffectType":"ArmorClass","ValueType":"Fixed","Value":"21"},
+    {"EffectType":"LightningResistance","ValueType":"Fixed","Value":"0"},
+    {"EffectType":"EarthResistance","ValueType":"Fixed","Value":"0"},
+    {"EffectType":"FireResistance","ValueType":"Fixed","Value":"0"},
+    {"EffectType":"ColdResistance","ValueType":"Fixed","Value":"0"}
+  ],
+  "Level":"6",
+  "Enchantment":"Undecided"
+}

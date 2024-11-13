@@ -1,0 +1,12 @@
+{
+  "Name":"Scroll of Cast Poison",
+  "SpellName":"Cast Poison",
+  "TargetType":"HostileBeing",
+  "Effects":[ {"EffectType":"CastPoison","Duration":"20"} ],
+  "Value": "100",
+  "CastTime":"2",
+  "AnimationImagePath":"Animations/Spells/SkullSmoke1_192_256",
+  "Prevalence":"40",
+  "Level":"5"
+}
+  

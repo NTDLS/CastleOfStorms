@@ -1,0 +1,12 @@
+{
+  "Name":"Scroll of Hold Monster",
+  "SpellName":"Hold Monster",
+  "TargetType":"HostileBeing",
+  "Effects":[ {"EffectType":"HoldMonster","Duration":"30"} ],
+  "Value": "150",
+  "CastTime":"5",
+  "AnimationImagePath":"Animations\\Spells\\Flash4_64_64",
+  "Prevalence":"40",
+  "Level":"3"
+}
+  

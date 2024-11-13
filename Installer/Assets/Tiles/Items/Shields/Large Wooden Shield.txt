@@ -1,0 +1,16 @@
+{
+  "Name":"Large Wooden Shield",
+  "Value": "24",
+  "Weight":"5000",
+  "Bulk":"50000",
+  "Prevalence":"80",
+  "Effects":[
+    {"EffectType":"ArmorClass","ValueType":"Fixed","Value":"9"},
+    {"EffectType":"LightningResistance","ValueType":"Fixed","Value":"0"},
+    {"EffectType":"EarthResistance","ValueType":"Fixed","Value":"0"},
+    {"EffectType":"FireResistance","ValueType":"Fixed","Value":"0"},
+    {"EffectType":"ColdResistance","ValueType":"Fixed","Value":"0"}
+  ],
+  "Level":"1",
+  "Enchantment":"Undecided"
+}

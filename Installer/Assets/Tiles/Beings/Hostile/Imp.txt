@@ -1,0 +1,11 @@
+{
+  "Name":"Imp",
+  "HitPoints": "15",
+  "Experience": "10",
+  "AC":"4",
+  "Dexterity":"5",
+  "Strength":"2",
+  "DamageDice":"1",
+  "DamageDiceFaces":"5",
+  "Level":"1"
+}

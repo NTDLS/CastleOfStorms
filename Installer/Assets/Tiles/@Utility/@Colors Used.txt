@@ -1,0 +1,8 @@
+    Earth: #a1591f
+Lightning: #6530ff
+     Fire: #ce1f00
+     Cold: #65dace
+
+
+Enchanted: #44fef6
+   Cursed: #c30120

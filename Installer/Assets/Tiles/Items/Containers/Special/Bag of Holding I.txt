@@ -1,0 +1,13 @@
+{
+  "Name":"Bag of Holding I",
+  "SubType":"Pack",
+  "BulkCapacity":"200000",
+  "WeightCapacity":"",
+  "CanWalkOn":"True",
+  "IsContainer":"True",
+  "Weight":"7500",
+  "Bulk":"100000",
+  "Value":"2500",
+  "Prevalence":"0",
+  "Level":"6"
+}

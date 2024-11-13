@@ -1,0 +1,12 @@
+{
+  "Name":"Scroll of Summon Monster III",
+  "SpellName":"Summon Monster III",
+  "TargetType":"Terrain",
+  "Effects":[ {"EffectType":"SummonMonster"} ],
+  "Value": "20",
+  "CastTime":"3",
+  "AnimationImagePath":"Animations/Spells/SkullSmoke2_192_256",
+  "Prevalence":"1",
+  "Level":"7"
+}
+  

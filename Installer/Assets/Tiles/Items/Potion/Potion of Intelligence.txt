@@ -1,0 +1,8 @@
+{
+  "Name":"Potion of Intelligence",
+  "Value": "20",
+  "Effects":[{"EffectType":"Intelligence","ValueType":"Fixed","Value":"5","Duration":"60"}],
+  "AnimationImagePath":"Animations/Spells/Flash1_64_64",
+  "Prevalence":"75",
+  "Level":"1"
+}

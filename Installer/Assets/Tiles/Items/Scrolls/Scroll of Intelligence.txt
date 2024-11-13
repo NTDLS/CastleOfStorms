@@ -1,0 +1,12 @@
+{
+  "Name":"Scroll of Intelligence",
+  "SpellName":"Intelligence",
+  "TargetType":"Self",
+  "Effects":[ {"EffectType":"Intelligence","ValueType":"Fixed","Value":"5","Duration":"60"} ],
+  "Value": "20",
+  "CastTime":"2",
+  "AnimationImagePath":"Animations/Spells/Flash1_64_64",
+  "Prevalence":"75",
+  "Level":"4"
+}
+  

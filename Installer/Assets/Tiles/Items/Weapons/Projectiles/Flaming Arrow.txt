@@ -1,0 +1,18 @@
+{
+  "Name":"Flaming Arrow",
+  "SubType": "Projectile",
+  "ProjectileType":"Arrow",
+  "DamageType":"Fire",
+  "Value": "4.8",
+  "DamageDice":"2",
+  "DamageDiceFaces":"6",
+  "DamageAdditional":"1",
+  "AnimationImagePath":"Animations\\Hits\\Smoke1_66_66",
+  "Weight":"0.01",
+  "Bulk":"0.05",
+  "Prevalence":"40",
+  "CanStack":"True",
+  "CanWalkOn":"True",
+  "IsConsumable":"True",
+  "Level":"2"
+}

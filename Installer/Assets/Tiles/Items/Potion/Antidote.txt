@@ -1,0 +1,8 @@
+{
+  "Name":"Antidote",
+  "Value": "40",
+  "Effects":[{"EffectType":"CurePoison"}],
+  "AnimationImagePath":"Animations/Spells/Flash1_64_64",
+  "Prevalence":"60",
+  "Level":"1"
+}

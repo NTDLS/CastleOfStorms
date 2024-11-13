@@ -1,0 +1,16 @@
+{
+  "Name":"Kite Shield",
+  "Value": "200",
+  "Weight":"4500",
+  "Bulk":"35000",
+  "Prevalence":"25",
+  "Effects":[
+    {"EffectType":"ArmorClass","ValueType":"Fixed","Value":"18"},
+    {"EffectType":"LightningResistance","ValueType":"Fixed","Value":"0"},
+    {"EffectType":"EarthResistance","ValueType":"Fixed","Value":"0"},
+    {"EffectType":"FireResistance","ValueType":"Fixed","Value":"0"},
+    {"EffectType":"ColdResistance","ValueType":"Fixed","Value":"0"}
+  ],
+  "Level":"5",
+  "Enchantment":"Undecided"
+}

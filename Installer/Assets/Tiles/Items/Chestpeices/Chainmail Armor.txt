@@ -1,0 +1,18 @@
+{
+  "Name":"Chainmail Armor",
+  "Value": "210",
+  "Effects":[
+    {"EffectType":"ArmorClass","ValueType":"Fixed","Value":"24"},
+    {"EffectType":"Dexterity","ValueType":"Fixed","Value":"0"},
+    {"EffectType":"LightningResistance","ValueType":"Fixed","Value":"-1"},
+    {"EffectType":"FireResistance","ValueType":"Fixed","Value":"1"},
+    {"EffectType":"EarthResistance","ValueType":"Fixed","Value":"1"},
+    {"EffectType":"ColdResistance","ValueType":"Fixed","Value":"-1"}
+  ],
+  "Weight":"9000",
+  "Bulk":"30000",
+  "Prevalence":"50",
+  "Level":"2",
+  "Enchantment":"Undecided",
+  "UnidentifiedTilePath":"Tiles\\Items\\Armor\\Chainmail Armor"
+}

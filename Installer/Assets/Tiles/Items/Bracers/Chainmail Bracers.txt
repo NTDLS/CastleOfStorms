@@ -1,0 +1,15 @@
+{
+  "Name":"Chainmail Bracers",
+  "Value": "80",
+  "Effects":[
+    {"EffectType":"ArmorClass","ValueType":"Fixed","Value":"4"},
+    {"EffectType":"LightningResistance","ValueType":"Fixed","Value":"-1"},
+    {"EffectType":"FireResistance","ValueType":"Fixed","Value":"1"},
+    {"EffectType":"EarthResistance","ValueType":"Fixed","Value":"1"},
+    {"EffectType":"ColdResistance","ValueType":"Fixed","Value":"-1"}
+  ],
+  "Weight":"450",
+  "Bulk":"2000",
+  "Prevalence":"60",
+  "Level":"2"
+}

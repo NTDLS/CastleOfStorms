@@ -1,0 +1,12 @@
+{
+  "Name":"5 Slot Belt",
+  "Weight":"500",
+  "Bulk":"400",
+  "Prevalence":"5",
+  "Value":"640",
+  "ItemCapacity":"5",
+  "BulkCapacity":"100000",
+  "WeightCapacity":"35000",
+  "Level":"9",
+  "Enchantment":"Undecided"
+}

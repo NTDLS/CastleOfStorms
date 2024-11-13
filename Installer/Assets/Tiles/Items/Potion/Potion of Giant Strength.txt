@@ -1,0 +1,8 @@
+{
+  "Name":"Potion of Giant Strength",
+  "Value": "250",
+  "Effects":[{"EffectType":"Strength","ValueType":"Fixed","Value":"15","Duration":"60"}],
+  "AnimationImagePath":"Animations/Spells/Flash1_64_64",
+  "Prevalence":"20",
+  "Level":"3"
+}

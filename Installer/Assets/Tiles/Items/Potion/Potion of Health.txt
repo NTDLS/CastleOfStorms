@@ -1,0 +1,8 @@
+{
+  "Name":"Potion of Health",
+  "Value": "35",
+  "Effects":[{"EffectType":"Heal","ValueType":"Fixed","Value":"30"}],
+  "AnimationImagePath":"Animations/Spells/Flash1_64_64",
+  "Prevalence":"90",
+  "Level":"1"
+}

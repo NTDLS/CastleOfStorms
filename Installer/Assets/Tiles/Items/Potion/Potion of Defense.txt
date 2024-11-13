@@ -1,0 +1,8 @@
+{
+  "Name":"Potion of Defense",
+  "Value": "20",
+  "Effects":[{"EffectType":"ArmorClass","ValueType":"Fixed","Value":"5","Duration":"60"}],
+  "AnimationImagePath":"Animations/Spells/Flash1_64_64",
+  "Prevalence":"75",
+  "Level":"1"
+}

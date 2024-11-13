@@ -1,0 +1,12 @@
+{
+  "Name":"Scroll of Heal Major Woulds",
+  "SpellName":"Heal Major Woulds",
+  "Effects":[ {"EffectType":"Heal","ValueType":"Percent","Value":"75"} ],
+  "TargetType":"Self",
+  "Value": "110",
+  "CastTime":"5",
+  "AnimationImagePath":"Animations/Spells/Flash1_64_64",
+  "Prevalence":"50",
+  "Level":"4"
+}
+  

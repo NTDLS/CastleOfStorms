@@ -1,0 +1,18 @@
+{
+  "Name":"Splintmail Armor",
+  "Value": "525",
+  "Effects":[
+    {"EffectType":"ArmorClass","ValueType":"Fixed","Value":"36"},
+    {"EffectType":"Dexterity","ValueType":"Fixed","Value":"0"},
+    {"EffectType":"LightningResistance","ValueType":"Fixed","Value":"-1"},
+    {"EffectType":"FireResistance","ValueType":"Fixed","Value":"1"},
+    {"EffectType":"EarthResistance","ValueType":"Fixed","Value":"1"},
+    {"EffectType":"ColdResistance","ValueType":"Fixed","Value":"-1"}
+  ],
+  "Weight":"12000",
+  "Bulk":"40000",
+  "Prevalence":"50",
+  "Level":"4",
+  "Enchantment":"Undecided",
+  "UnidentifiedTilePath":"Tiles\\Items\\Armor\\Splintmail Armor"
+}

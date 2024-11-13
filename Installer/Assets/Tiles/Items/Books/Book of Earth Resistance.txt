@@ -1,0 +1,9 @@
+{
+  "Name":"Book of Earth Resistance",
+  "SpellName":"Earth Resistance",
+  "AnimationImagePath":"Animations/Spells/Flash1_64_64",
+  "Value": "6250",
+  "Prevalence":"3",
+  "Level":"2",
+  "Mana":"3"
+}

@@ -1,0 +1,12 @@
+{
+  "Name":"Scroll of Defense",
+  "SpellName":"Defense",
+  "TargetType":"Self",
+  "Effects":[ {"EffectType":"ArmorClass","ValueType":"Fixed","Value":"5","Duration":"60"} ],
+  "Value": "100",
+  "CastTime":"2",
+  "AnimationImagePath":"Animations/Spells/Flash1_64_64",
+  "Prevalence":"75",
+  "Level":"1"
+}
+  

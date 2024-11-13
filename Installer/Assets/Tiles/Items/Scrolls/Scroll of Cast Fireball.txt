@@ -1,0 +1,17 @@
+{
+  "Name":"Scroll of Cast Fireball",
+  "SpellName":"Cast Fireball",
+  "TargetType":"HostileBeing",
+  "Effects":[ {"EffectType":"CastFireball"} ],
+  "Value": "200",
+  "DamageType":"Fire",
+  "CastTime":"2",
+  "DamageDice":"2",
+  "DamageDiceFaces":"6",
+  "DamageAdditional":"0",
+  "SplashDamageRange":"60",
+  "AnimationImagePath":"Animations\\Hits\\Explosion1_256_256",
+  "Prevalence":"40",
+  "Level":"4"
+}
+  

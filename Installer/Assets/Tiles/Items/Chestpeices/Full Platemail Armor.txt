@@ -1,0 +1,18 @@
+{
+  "Name":"Full Platemail Armor",
+  "Value": "1852",
+  "Effects":[
+    {"EffectType":"ArmorClass","ValueType":"Fixed","Value":"48"},
+    {"EffectType":"Dexterity","ValueType":"Fixed","Value":"0"},
+    {"EffectType":"LightningResistance","ValueType":"Fixed","Value":"-1"},
+    {"EffectType":"FireResistance","ValueType":"Fixed","Value":"1"},
+    {"EffectType":"EarthResistance","ValueType":"Fixed","Value":"1"},
+    {"EffectType":"ColdResistance","ValueType":"Fixed","Value":"-1"}
+  ],
+  "Weight":"15000",
+  "Bulk":"60000",
+  "Prevalence":"50",
+  "Level":"4",
+  "Enchantment":"Undecided",
+  "UnidentifiedTilePath":"Tiles\\Items\\Armor\\Full Platemail Armor"
+}

@@ -1,0 +1,16 @@
+{
+  "Name":"Large Iron Shield",
+  "Value": "63",
+  "Weight":"6000",
+  "Bulk":"50000",
+  "Prevalence":"60",
+  "Effects":[
+    {"EffectType":"ArmorClass","ValueType":"Fixed","Value":"12"},
+    {"EffectType":"LightningResistance","ValueType":"Fixed","Value":"0"},
+    {"EffectType":"EarthResistance","ValueType":"Fixed","Value":"0"},
+    {"EffectType":"FireResistance","ValueType":"Fixed","Value":"0"},
+    {"EffectType":"ColdResistance","ValueType":"Fixed","Value":"0"}
+  ],
+  "Level":"3",
+  "Enchantment":"Undecided"
+}

@@ -1,0 +1,8 @@
+{
+  "CanTakeDamage": "True",
+  "HitPoints": "100",
+  "ActorClass": "ActorHostileBeing",
+  "CanWalkOn": "False",
+  "IsContainer": "True",
+  "Prevalence":"100"
+}

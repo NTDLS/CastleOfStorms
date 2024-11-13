@@ -1,0 +1,16 @@
+{
+  "Name":"Wooden Bow",
+  "SubType": "RangedWeapon",
+  "TargetType":"HostileBeing",
+  "ProjectileType":"Arrow",
+  "Value": "40",
+  "DamageDice":"0",
+  "DamageDiceFaces":"0",
+  "DamageAdditional":"0",
+  "Weight":"10",
+  "Bulk":"9",
+  "Prevalence":"100",
+  "CanStack":"False",
+  "CanWalkOn":"True",
+  "Level":"1"
+}

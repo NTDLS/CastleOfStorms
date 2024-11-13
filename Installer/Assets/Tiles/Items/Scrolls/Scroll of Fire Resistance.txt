@@ -1,0 +1,12 @@
+{
+  "Name":"Scroll of Fire Resistance",
+  "SpellName":"Fire Resistance",
+  "TargetType":"Self",
+  "Effects":[ {"EffectType":"FireResistance","ValueType":"Fixed","Value":"1","Duration":"60"} ],
+  "Value": "125",
+  "CastTime":"2",
+  "AnimationImagePath":"Animations/Spells/Flash1_64_64",
+  "Prevalence":"65",
+  "Level":"5"
+}
+  

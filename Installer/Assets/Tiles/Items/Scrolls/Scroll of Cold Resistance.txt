@@ -1,0 +1,12 @@
+{
+  "Name":"Scroll of Cold Resistance",
+  "SpellName":"Cold Resistance",
+  "TargetType":"Self",
+  "Effects":[ {"EffectType":"ColdResistance","ValueType":"Fixed","Value":"1","Duration":"60"} ],
+  "Value": "125",
+  "CastTime":"2",
+  "AnimationImagePath":"Animations/Spells/Flash1_64_64",
+  "Prevalence":"65",
+  "Level":"3"  
+}
+  

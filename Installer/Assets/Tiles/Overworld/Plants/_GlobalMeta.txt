@@ -1,0 +1,4 @@
+{
+  "ActorClass": "ActorTerrain",
+  "CanWalkOk": "True"
+}

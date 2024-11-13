@@ -1,0 +1,16 @@
+{
+  "Name":"Medium Steel Shield",
+  "Value": "67",
+  "Weight":"5000",
+  "Bulk":"35000",
+  "Prevalence":"50",
+  "Effects":[
+    {"EffectType":"ArmorClass","ValueType":"Fixed","Value":"13"},
+    {"EffectType":"LightningResistance","ValueType":"Fixed","Value":"0"},
+    {"EffectType":"EarthResistance","ValueType":"Fixed","Value":"0"},
+    {"EffectType":"FireResistance","ValueType":"Fixed","Value":"0"},
+    {"EffectType":"ColdResistance","ValueType":"Fixed","Value":"0"}
+  ],
+  "Level":"4",
+  "Enchantment":"Undecided"
+}

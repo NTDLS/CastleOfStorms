@@ -1,0 +1,16 @@
+{
+  "Name":"Small Wooden Shield",
+  "Value": "11",
+  "Weight":"3000",
+  "Bulk":"15000",
+  "Prevalence":"100",
+  "Effects":[
+    {"EffectType":"ArmorClass","ValueType":"Fixed","Value":"3"},
+    {"EffectType":"LightningResistance","ValueType":"Fixed","Value":"0"},
+    {"EffectType":"EarthResistance","ValueType":"Fixed","Value":"0"},
+    {"EffectType":"FireResistance","ValueType":"Fixed","Value":"0"},
+    {"EffectType":"ColdResistance","ValueType":"Fixed","Value":"0"}
+  ],
+  "Level":"1",
+  "Enchantment":"Undecided"
+}

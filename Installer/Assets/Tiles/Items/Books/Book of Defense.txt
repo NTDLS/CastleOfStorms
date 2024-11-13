@@ -1,0 +1,9 @@
+{
+  "Name":"Book of Defense",
+  "SpellName":"Defense",
+  "AnimationImagePath":"Animations/Spells/Flash1_64_64",
+  "Value": "5000",
+  "Prevalence":"3",
+  "Level":"1",
+  "Mana":"2"
+}

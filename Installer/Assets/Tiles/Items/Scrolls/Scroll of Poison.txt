@@ -1,0 +1,12 @@
+{
+  "Name":"Scroll of Poison",
+  "SpellName":"Poison",
+  "TargetType":"Self",
+  "Effects":[ {"EffectType":"Poison","Duration":"20"} ],
+  "Value": "1",
+  "CastTime":"5",
+  "AnimationImagePath":"Animations/Spells/SkullSmoke1_192_256",
+  "Prevalence":"20",
+  "Level":"1"
+}
+  

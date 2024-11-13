@@ -1,0 +1,8 @@
+{
+  "Name":"Cure Light Wounds",
+  "Value": "20",
+  "Effects":[{"EffectType":"Heal","ValueType":"Fixed","Value":"10"}],
+  "AnimationImagePath":"Animations/Spells/Flash1_64_64",
+  "Prevalence":"100",
+  "Level":"1"
+}

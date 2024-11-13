@@ -1,0 +1,12 @@
+{
+  "Name":"Scroll of Constitution",
+  "SpellName":"Constitution",
+  "TargetType":"Self",
+  "Effects":[ {"EffectType":"Constitution","ValueType":"Fixed","Value":"1","Duration":"60"} ],
+  "Value": "100",
+  "CastTime":"2",
+  "AnimationImagePath":"Animations/Spells/Flash1_64_64",
+  "Prevalence":"75",
+  "Level":"1"
+}
+  

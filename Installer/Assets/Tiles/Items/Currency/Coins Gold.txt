@@ -1,0 +1,10 @@
+{
+  "Name":"Gold Coins",
+  "SubType":"Money",
+  "CanStack":"True",
+  "CanWalkOn":"True",
+  "Weight":"0",
+  "Bulk":"0",
+  "Value": "1",
+  "Prevalence":"60"
+}

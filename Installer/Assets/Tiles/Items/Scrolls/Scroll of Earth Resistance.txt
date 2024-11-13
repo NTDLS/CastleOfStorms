@@ -1,0 +1,12 @@
+{
+  "Name":"Scroll of Earth Resistance",
+  "SpellName":"Earth Resistance",
+  "Effects":[ {"EffectType":"EarthResistance","ValueType":"Fixed","Value":"1","Duration":"60"} ],
+  "Value": "125",
+  "TargetType":"Self",
+  "CastTime":"2",
+  "AnimationImagePath":"Animations/Spells/Flash1_64_64",
+  "Prevalence":"65",
+  "Level":"2"
+}
+  

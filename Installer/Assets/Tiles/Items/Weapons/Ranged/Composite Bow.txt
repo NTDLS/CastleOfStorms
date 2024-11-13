@@ -1,0 +1,16 @@
+{
+  "Name":"Composite Bow",
+  "SubType": "RangedWeapon",
+  "TargetType":"HostileBeing",
+  "ProjectileType":"Arrow",
+  "Value": "200",
+  "DamageDice":"0",
+  "DamageDiceFaces":"0",
+  "DamageAdditional":"1",
+  "Weight":"15",
+  "Bulk":"10",
+  "Prevalence":"50",
+  "CanStack":"False",
+  "CanWalkOn":"True",
+  "Level":"2"
+}

@@ -1,0 +1,12 @@
+{
+  "Name":"Scroll of Heal Minor Woulds",
+  "SpellName":"Heal Minor Woulds",
+  "TargetType":"Self",
+  "Effects":[ {"EffectType":"Heal","ValueType":"Percent","Value":"25"} ],
+  "Value": "20",
+  "CastTime":"5",
+  "AnimationImagePath":"Animations/Spells/Flash1_64_64",
+  "Prevalence":"100",
+  "Level":"1"
+}
+  

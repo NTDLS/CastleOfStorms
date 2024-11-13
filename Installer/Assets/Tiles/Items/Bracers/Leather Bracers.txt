@@ -1,0 +1,15 @@
+{
+  "Name":"Leather Bracers",
+  "Value": "10",
+  "Effects":[
+    {"EffectType":"ArmorClass","ValueType":"Fixed","Value":"1"},
+    {"EffectType":"LightningResistance","ValueType":"Fixed","Value":"0"},
+    {"EffectType":"FireResistance","ValueType":"Fixed","Value":"0"},
+    {"EffectType":"EarthResistance","ValueType":"Fixed","Value":"0"},
+    {"EffectType":"ColdResistance","ValueType":"Fixed","Value":"1"}
+  ],
+  "Weight":"250",
+  "Bulk":"2000",
+  "Prevalence":"100",
+  "Level":"1"
+}

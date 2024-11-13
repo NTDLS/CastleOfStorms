@@ -1,0 +1,17 @@
+{
+  "Name":"Steel Helment",
+  "Value": "60",
+  "Effects":[
+    {"EffectType":"ArmorClass","ValueType":"Fixed","Value":"9"},
+    {"EffectType":"Dexterity","ValueType":"Fixed","Value":"-1"},
+    {"EffectType":"LightningResistance","ValueType":"Fixed","Value":"-1"},
+    {"EffectType":"FireResistance","ValueType":"Fixed","Value":"1"},
+    {"EffectType":"EarthResistance","ValueType":"Fixed","Value":"1"},
+    {"EffectType":"ColdResistance","ValueType":"Fixed","Value":"-1"}
+  ],
+  "Weight":"2500",
+  "Bulk":"2000",
+  "Prevalence":"50",
+  "Level":"1",
+  "Enchantment":"Undecided"
+}

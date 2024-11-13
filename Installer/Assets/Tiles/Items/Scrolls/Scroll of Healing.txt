@@ -1,0 +1,12 @@
+{
+  "Name":"Scroll of Healing",
+  "SpellName":"Healing",
+  "TargetType":"Self",
+  "Effects":[ {"EffectType":"Heal","ValueType":"Percent","Value":"90"}, {"EffectType":"Heal","ValueType":"Fixed","Value":"25"} ],
+  "Value": "150",
+  "CastTime":"5",
+  "AnimationImagePath":"Animations/Spells/Flash1_64_64",
+  "Prevalence":"70",
+  "Level":"5"
+}
+  

@@ -1,0 +1,12 @@
+{
+  "Name":"Broken Sword",
+  "Value": "0",
+  "DamageDice":"0",
+  "DamageDiceFaces":"0",
+  "DamageAdditional":"0",
+  "Weight":"1000",
+  "Bulk":"5000",
+  "Prevalence":"100",
+  "Level":"1",
+  "Enchantment":"Undecided"
+}

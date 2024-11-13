@@ -1,0 +1,15 @@
+{
+  "Name":"Leather Boots",
+  "Value": "5",
+  "Weight":"1500",
+  "Bulk":"4000",
+  "Prevalence":"100",
+  "Effects":[
+    {"EffectType":"ArmorClass","ValueType":"Fixed","Value":"1"},
+    {"EffectType":"LightningResistance","ValueType":"Fixed","Value":"0"},
+    {"EffectType":"EarthResistance","ValueType":"Fixed","Value":"0"},
+    {"EffectType":"FireResistance","ValueType":"Fixed","Value":"0"},
+    {"EffectType":"ColdResistance","ValueType":"Fixed","Value":"1"}
+  ],
+  "Level":"1"
+}

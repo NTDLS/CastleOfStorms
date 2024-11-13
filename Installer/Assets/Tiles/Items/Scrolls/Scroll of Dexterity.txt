@@ -1,0 +1,12 @@
+{
+  "Name":"Scroll of Dexterity",
+  "SpellName":"Dexterity",
+  "TargetType":"Self",
+  "Effects":[ {"EffectType":"Dexterity","ValueType":"Fixed","Value":"1","Duration":"60"} ],
+  "Value": "100",
+  "CastTime":"2",
+  "AnimationImagePath":"Animations/Spells/Flash1_64_64",
+  "Prevalence":"75",
+  "Level":"1"
+}
+  

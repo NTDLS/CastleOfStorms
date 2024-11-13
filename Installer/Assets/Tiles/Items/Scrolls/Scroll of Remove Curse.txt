@@ -1,0 +1,12 @@
+{
+  "Name":"Scroll of Remove Curse",
+  "SpellName":"Remove Curse",
+  "TargetType":"Self",
+  "Effects":[ {"EffectType":"RemoveCurse"} ],
+  "Value": "250",
+  "CastTime":"5",
+  "AnimationImagePath":"Animations/Spells/Flash1_64_64",
+  "Prevalence":"95",
+  "Level":"1"
+}
+  

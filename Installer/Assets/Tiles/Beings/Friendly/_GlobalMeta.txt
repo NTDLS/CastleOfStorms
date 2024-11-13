@@ -1,0 +1,7 @@
+{
+  "CanTakeDamage": "False",
+  "HitPoints": "100",
+  "CanWalkOn": "False",
+  "ActorClass": "ActorFriendyBeing",
+  "Prevalence":"100"
+}

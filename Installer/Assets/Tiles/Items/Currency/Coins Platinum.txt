@@ -1,0 +1,10 @@
+{
+  "Name":"Platinum Coins",
+  "SubType":"Money",
+  "CanStack":"True",
+  "CanWalkOn":"True",
+  "Weight":"0",
+  "Bulk":"0",
+  "Value": "10",
+  "Prevalence":"5"
+}

@@ -1,0 +1,12 @@
+{
+  "Name":"Scroll of Heal Medium Woulds",
+  "SpellName":"Heal Medium Woulds",
+  "TargetType":"Self",
+  "Effects":[ {"EffectType":"Heal","ValueType":"Percent","Value":"50"} ],
+  "Value": "80",
+  "CastTime":"5",
+  "AnimationImagePath":"Animations/Spells/Flash1_64_64",
+  "Prevalence":"60",
+  "Level":"3"
+}
+  

@@ -1,0 +1,16 @@
+{
+  "Name":"Crested Shield",
+  "Value": "600",
+  "Weight":"5000",
+  "Bulk":"39000",
+  "Prevalence":"10",
+  "Effects":[
+    {"EffectType":"ArmorClass","ValueType":"Fixed","Value":"22"},
+    {"EffectType":"LightningResistance","ValueType":"Fixed","Value":"0"},
+    {"EffectType":"EarthResistance","ValueType":"Fixed","Value":"0"},
+    {"EffectType":"FireResistance","ValueType":"Fixed","Value":"0"},
+    {"EffectType":"ColdResistance","ValueType":"Fixed","Value":"0"}
+  ],
+  "Level":"6",
+  "Enchantment":"Undecided"
+}

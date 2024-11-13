@@ -1,0 +1,18 @@
+{
+  "Name":"Chainmail Bar Armor",
+  "Value": "315",
+  "Effects":[
+    {"EffectType":"ArmorClass","ValueType":"Fixed","Value":"30"},
+    {"EffectType":"Dexterity","ValueType":"Fixed","Value":"0"},
+    {"EffectType":"LightningResistance","ValueType":"Fixed","Value":"-1"},
+    {"EffectType":"FireResistance","ValueType":"Fixed","Value":"1"},
+    {"EffectType":"EarthResistance","ValueType":"Fixed","Value":"1"},
+    {"EffectType":"ColdResistance","ValueType":"Fixed","Value":"-1"}
+  ],
+  "Weight":"10000",
+  "Bulk":"30000",
+  "Prevalence":"60",
+  "Level":"3",
+  "Enchantment":"Undecided",
+  "UnidentifiedTilePath":"Tiles\\Items\\Armor\\Chainmail Bar Armor"
+}

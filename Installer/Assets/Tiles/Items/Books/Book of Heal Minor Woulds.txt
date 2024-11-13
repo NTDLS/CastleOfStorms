@@ -1,0 +1,9 @@
+{
+  "Name":"Book of Heal Minor Woulds",
+  "SpellName":"Heal Minor Woulds",
+  "AnimationImagePath":"Animations/Spells/Flash1_64_64",
+  "Value": "1000",
+  "Prevalence":"3",
+  "Level":"1",
+  "Mana":"3"
+}

@@ -1,0 +1,8 @@
+{
+  "Name":"Torn Cloak",
+  "Value": "0",
+  "Weight":"500",
+  "Bulk":"6000",
+  "Prevalence":"80",
+  "Level":"1"
+}

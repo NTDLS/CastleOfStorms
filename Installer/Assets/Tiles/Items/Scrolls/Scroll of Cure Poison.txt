@@ -1,0 +1,12 @@
+{
+  "Name":"Scroll of Cure Poison",
+  "SpellName":"Cure Poison",
+  "TargetType":"Self",
+  "Effects":[ {"EffectType":"CurePoison","ValueType":"Fixed","Value":"1"} ],
+  "Value": "40",
+  "CastTime":"4",
+  "AnimationImagePath":"Animations/Spells/Flash1_64_64",
+  "Prevalence":"50",
+  "Level":"2"
+}
+  

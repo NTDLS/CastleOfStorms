@@ -1,0 +1,13 @@
+{
+  "Name":"Demon Fighter (Major)",
+  "HitPoints": "150",
+  "Experience": "100",
+  "DamageType":"Fire",
+  "WeaknessType":"Cold",
+  "AC":"15",
+  "Dexterity":"30",
+  "Strength":"35",
+  "DamageDice":"2",
+  "DamageDiceFaces":"8",
+  "Level":"4"
+}

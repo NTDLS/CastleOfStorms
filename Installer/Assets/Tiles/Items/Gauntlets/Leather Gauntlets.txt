@@ -1,0 +1,17 @@
+
+{
+  "Name":"Leather Gauntlets",
+  "Value": "5",
+  "Effects":[
+    {"EffectType":"ArmorClass","ValueType":"Fixed","Value":"1"},
+    {"EffectType":"Dexterity","ValueType":"Fixed","Value":"0"},
+    {"EffectType":"LightningResistance","ValueType":"Fixed","Value":"0"},
+    {"EffectType":"FireResistance","ValueType":"Fixed","Value":"0"},
+    {"EffectType":"EarthResistance","ValueType":"Fixed","Value":"0"},
+    {"EffectType":"ColdResistance","ValueType":"Fixed","Value":"1"}
+  ],
+  "Weight":"250",
+  "Bulk":"2000",
+  "Prevalence":"100",
+  "Level":"1"
+}

@@ -1,0 +1,18 @@
+{
+  "Name":"Elvin Armor",
+  "Value": "5100",
+  "Effects":[
+    {"EffectType":"ArmorClass","ValueType":"Fixed","Value":"52"},
+    {"EffectType":"Dexterity","ValueType":"Fixed","Value":"0"},
+    {"EffectType":"LightningResistance","ValueType":"Fixed","Value":"1"},
+    {"EffectType":"FireResistance","ValueType":"Fixed","Value":"1"},
+    {"EffectType":"EarthResistance","ValueType":"Fixed","Value":"1"},
+    {"EffectType":"ColdResistance","ValueType":"Fixed","Value":"1"}
+  ],
+  "Weight":"5000",
+  "Bulk":"24000",
+  "Prevalence":"50",
+  "Level":"6",
+  "Enchantment":"Undecided",
+  "UnidentifiedTilePath":"Tiles\\Items\\Armor\\Elvin Armor"
+}
