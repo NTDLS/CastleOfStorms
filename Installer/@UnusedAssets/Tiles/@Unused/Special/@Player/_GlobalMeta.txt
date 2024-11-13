@@ -1,6 +1,0 @@
-{
-  "CanTakeDamage": "True",
-  "CanWalkOn": "False",
-  "HitPoints": "10",
-  "ActorClass": "ActorPlayer"
-}

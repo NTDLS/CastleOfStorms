@@ -222,8 +222,8 @@ namespace Cos.Engine
 
             if (Settings.PreCacheAllAssets)
             {
-                //Assets.HydrateCache(loadingHeader, loadingDetail);
-                //Sprites.HydrateCache(loadingHeader, loadingDetail);
+                Assets.HydrateCache(loadingHeader, loadingDetail);
+                Sprites.HydrateCache(loadingHeader, loadingDetail);
             }
         }
 

@@ -5,7 +5,7 @@ namespace Cos.Engine.Sprite.Player
     internal class SpriteDebugPlayer : SpritePlayerBase
     {
         public SpriteDebugPlayer(EngineCore engine)
-            : base(engine, @"Sprites\Player\Ships\Debug.png")
+            : base(engine, @"@Players\1\Front 1.png")
         {
         }
     }

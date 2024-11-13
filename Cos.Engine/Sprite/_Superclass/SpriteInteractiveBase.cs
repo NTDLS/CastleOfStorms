@@ -42,7 +42,8 @@ namespace Cos.Engine.Sprite._Superclass
         /// <param name="spriteImagePath"></param>
         private void SetImageAndLoadMetadata(string spriteImagePath)
         {
-            _metadata = _engine.Assets.GetMetaData<InteractiveSpriteMetadata>(spriteImagePath);
+            //_metadata = _engine.Assets.GetMetaData<InteractiveSpriteMetadata>(spriteImagePath);
+            _metadata = new();
 
             SetImage(spriteImagePath);
 

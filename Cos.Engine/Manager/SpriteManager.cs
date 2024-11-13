@@ -338,6 +338,7 @@ namespace Cos.Engine.Manager
             statusIndex = 0;
             loadingHeader.SetTextAndCenterX("Hydrating animation cache...");
 
+            /*
             // Create instances of derived types
             foreach (var type in derivedTypes)
             {
@@ -355,6 +356,7 @@ namespace Cos.Engine.Manager
                 && o.EndsWith(@".png", StringComparison.CurrentCultureIgnoreCase)).ToList();
 
             animations.ForEach(o => Animations.Add(o).QueueForDelete());
+            */
         }
     }
 }

@@ -1,1 +1,0 @@
-These are used internally to replace the spawn point. Do not use them in the game editor.
