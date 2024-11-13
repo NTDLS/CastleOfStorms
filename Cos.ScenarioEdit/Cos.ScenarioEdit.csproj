@@ -1,0 +1,89 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ApplicationIcon>RougueQuest.ico</ApplicationIcon>
+    <AssemblyName>ScenarioEdit</AssemblyName>
+    <RootNamespace>ScenarioEdit</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="NPOI" Version="2.7.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="FormEditEffects.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormEditComboBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormScenarioItems.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormDeleteLevel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormSelectLevel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="FormSelectLevel - Copy %282%29 - Copy %282%29.resx">
+      <DependentUpon>FormSelectLevel.resx</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="FormSelectLevel - Copy %282%29 - Copy - Copy.resx">
+      <DependentUpon>FormSelectLevel - Copy (2).resx</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="FormSelectLevel - Copy %282%29 - Copy.resx">
+      <DependentUpon>FormSelectLevel - Copy (2).resx</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="FormSelectLevel - Copy %282%29.resx">
+      <DependentUpon>FormSelectLevel.resx</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="FormSelectLevel - Copy %283%29 - Copy.resx">
+      <DependentUpon>FormSelectLevel.resx</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="FormSelectLevel - Copy %283%29.resx">
+      <DependentUpon>FormSelectLevel.resx</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="FormSelectLevel - Copy - Copy %282%29 - Copy.resx">
+      <DependentUpon>FormSelectLevel - Copy.resx</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="FormSelectLevel - Copy - Copy %282%29.resx">
+      <DependentUpon>FormSelectLevel - Copy.resx</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="FormSelectLevel - Copy - Copy %283%29.resx">
+      <DependentUpon>FormSelectLevel.resx</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="FormSelectLevel - Copy - Copy - Copy %282%29.resx">
+      <DependentUpon>FormSelectLevel - Copy.resx</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="FormSelectLevel - Copy - Copy - Copy - Copy.resx">
+      <DependentUpon>FormSelectLevel - Copy - Copy.resx</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="FormSelectLevel - Copy - Copy - Copy.resx">
+      <DependentUpon>FormSelectLevel - Copy - Copy.resx</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="FormSelectLevel - Copy - Copy.resx">
+      <DependentUpon>FormSelectLevel - Copy.resx</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="FormSelectLevel - Copy.resx">
+      <DependentUpon>FormSelectLevel.resx</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

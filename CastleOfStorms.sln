@@ -20,6 +20,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cos.Client", "CoS.Client\Co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cos.Engine", "CoS.Engine\Cos.Engine.csproj", "{7816F662-44AA-4B79-BFF5-2FCB1983AD17}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cos.ScenarioEdit", "Cos.ScenarioEdit\Cos.ScenarioEdit.csproj", "{0E5DD18A-5003-4331-A62A-51C0FB08AAFC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +48,10 @@ Global
 		{7816F662-44AA-4B79-BFF5-2FCB1983AD17}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7816F662-44AA-4B79-BFF5-2FCB1983AD17}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7816F662-44AA-4B79-BFF5-2FCB1983AD17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E5DD18A-5003-4331-A62A-51C0FB08AAFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E5DD18A-5003-4331-A62A-51C0FB08AAFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E5DD18A-5003-4331-A62A-51C0FB08AAFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E5DD18A-5003-4331-A62A-51C0FB08AAFC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
