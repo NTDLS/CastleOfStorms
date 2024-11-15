@@ -34,20 +34,20 @@ namespace Cos.Engine.Sprite._Superclass._Root
         /// </summary>
         /// <param name="percentage"></param>
         /// <returns></returns>
-        public CosVector MakeMovementVector() => Orientation * Speed * Throttle;
+        public CosVector MakeMovementVector() => Orientation * Speed;
 
         /// <summary>
         /// Returns the movement vector in the given direction taking into account the speed and throttle percentage.
         /// </summary>
         /// <param name="percentage"></param>
         /// <returns></returns>
-        public CosVector MakeMovementVector(float angleInRadians) => new CosVector(angleInRadians) * Speed * Throttle;
+        public CosVector MakeMovementVector(float angleInRadians) => new CosVector(angleInRadians) * Speed;
 
         /// <summary>
         /// Returns the movement vector in the given direction taking into account the speed and throttle percentage.
         /// </summary>
         /// <param name="percentage"></param>
         /// <returns></returns>
-        public CosVector MakeMovementVector(CosVector angle) => angle.Normalize() * Speed * Throttle;
+        public CosVector MakeMovementVector(CosVector angle) => angle.Normalize() * Speed;
     }
 }

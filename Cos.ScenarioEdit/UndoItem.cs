@@ -1,6 +1,5 @@
-﻿/*
-using Library.Engine;
-using Library.Types;
+﻿using Cos.Engine.Sprite._Superclass._Root;
+using Cos.Library.Mathematics;
 using System.Collections.Generic;
 
 namespace ScenarioEdit
@@ -16,9 +15,11 @@ namespace ScenarioEdit
 
         public ActionPerformed Action { get; set; }
 
-        public List<ActorBase> Tiles { get; set; } = new List<ActorBase>();
+        public List<SpriteBase> Tiles { get; set; } = new();
 
-        public Point<double> Offset { get; set; }
+        /// <summary>
+        /// Used to reverse tile movements.
+        /// </summary>
+        public CosVector? Offset { get; set; }
     }
 }
-*/

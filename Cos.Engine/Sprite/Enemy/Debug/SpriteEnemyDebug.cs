@@ -14,13 +14,10 @@ namespace Cos.Engine.Sprite.Enemy.Debug
         public SpriteEnemyDebug(EngineCore engine)
             : base(engine, @"Sprites\Enemy\Debug\Hull.png")
         {
-            Throttle = 0;
-
             _particle1 = _engine.Sprites.Particles.AddAt(CosVector.Zero, new Size(5, 5));
             _particle1.Pattern = CosParticleColorType.Solid;
             _particle1.Color = _engine.Rendering.Materials.Colors.Red;
             _particle1.Shape = CosParticleShape.HollowEllipse;
-            _particle1.Throttle = 0;
             _particle1.RotationSpeed = 0;
             _particle1.RecalculateMovementVector();
 
@@ -28,7 +25,6 @@ namespace Cos.Engine.Sprite.Enemy.Debug
             _particle2.Pattern = CosParticleColorType.Solid;
             _particle2.Color = _engine.Rendering.Materials.Colors.Green;
             _particle2.Shape = CosParticleShape.FilledEllipse;
-            _particle2.Throttle = 0;
             _particle2.RotationSpeed = 0;
             _particle2.RecalculateMovementVector();
 
@@ -36,7 +32,6 @@ namespace Cos.Engine.Sprite.Enemy.Debug
             _particle3.Pattern = CosParticleColorType.Solid;
             _particle3.Color = _engine.Rendering.Materials.Colors.Blue;
             _particle3.Shape = CosParticleShape.HollowRectangle;
-            _particle3.Throttle = 0;
             _particle3.RotationSpeed = 0.02f;
             _particle3.RecalculateMovementVector();
 
@@ -44,7 +39,6 @@ namespace Cos.Engine.Sprite.Enemy.Debug
             _particle4.Pattern = CosParticleColorType.Solid;
             _particle4.Color = _engine.Rendering.Materials.Colors.Cyan;
             _particle4.Shape = CosParticleShape.Triangle;
-            _particle4.Throttle = 0;
             _particle4.RotationSpeed = 0.02f;
             _particle4.RecalculateMovementVector();
         }

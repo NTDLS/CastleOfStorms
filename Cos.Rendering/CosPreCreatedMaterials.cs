@@ -8,6 +8,7 @@ namespace Cos.Rendering
         public class RawColors
         {
             public RawColor4 Red { get; private set; } = new(1, 0, 0, 1);
+            public RawColor4 Yellow { get; private set; } = new(1, 0, 0, 1);
             public RawColor4 Green { get; private set; } = new(0, 1, 0, 1);
             public RawColor4 Blue { get; private set; } = new(0, 0, 1, 1);
             public RawColor4 Black { get; private set; } = new(0, 0, 0, 1);
@@ -25,6 +26,7 @@ namespace Cos.Rendering
         public class ColorBrushes
         {
             public SolidColorBrush Red { get; internal set; }
+            public SolidColorBrush Yellow { get; internal set; }
             public SolidColorBrush Green { get; internal set; }
             public SolidColorBrush Blue { get; internal set; }
             public SolidColorBrush Black { get; internal set; }
@@ -40,6 +42,7 @@ namespace Cos.Rendering
             public ColorBrushes(RenderTarget renterTarget, RawColors color)
             {
                 Red = new SolidColorBrush(renterTarget, color.Red);
+                Yellow = new SolidColorBrush(renterTarget, color.Yellow);
                 Green = new SolidColorBrush(renterTarget, color.Green);
                 Blue = new SolidColorBrush(renterTarget, color.Blue);
                 Black = new SolidColorBrush(renterTarget, color.Black);

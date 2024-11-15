@@ -29,9 +29,7 @@ namespace Cos.Engine.Sprite
 
         private void Initialize()
         {
-            SetHullHealth(100000);
             Speed = 1.5f;
-            Throttle = 0.05f;
             RecalculateMovementVector();
         }
 

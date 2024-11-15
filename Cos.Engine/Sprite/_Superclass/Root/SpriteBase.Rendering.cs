@@ -13,6 +13,17 @@ namespace Cos.Engine.Sprite._Superclass._Root
             if (_isVisible && _image != null)
             {
                 DrawImage(renderTarget, _image);
+
+                if (IsHoverHighlighted)
+                {
+                    _engine.Rendering.DrawRectangle(renderTarget, RawRenderBounds,
+                        _engine.Rendering.Materials.Colors.Red, 0, 1, Orientation.RadiansSigned);
+                }
+                if (IsSelectedHighlighted)
+                {
+                    _engine.Rendering.DrawRectangle(renderTarget, RawRenderBounds,
+                        _engine.Rendering.Materials.Colors.Yellow, 0, 1, Orientation.RadiansSigned);
+                }
             }
         }
 

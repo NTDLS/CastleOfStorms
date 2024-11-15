@@ -169,17 +169,6 @@ namespace Cos.Engine.Manager
             }
         }
 
-        public void QueueAllForDeletionByOwner(uint ownerUID)
-        {
-            foreach (var sprite in _collection)
-            {
-                if (sprite.OwnerUID == ownerUID)
-                {
-                    sprite.QueueForDelete();
-                }
-            }
-        }
-
         public SpriteBase[] Intersections(SpriteBase with)
         {
             var objects = new List<SpriteBase>();
@@ -286,7 +275,6 @@ namespace Cos.Engine.Manager
 
                 fragment.Orientation.Degrees = CosRandom.Between(0.0f, 359.0f);
                 fragment.Speed = CosRandom.Between(1, 3.5f);
-                fragment.Throttle = 1;
                 fragment.RecalculateMovementVector();
             }
         }

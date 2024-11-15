@@ -55,7 +55,6 @@ namespace Cos.Engine.Sprite
 
             Speed = CosRandom.Between(1.0f, 4.0f);
             Orientation.Degrees = CosRandom.Between(0, 359);
-            Throttle = 1;
 
             RecalculateMovementVector();
 
@@ -160,6 +159,12 @@ namespace Cos.Engine.Sprite
                         _engine.Rendering.DrawTriangle(renderTarget,
                             RenderLocation.X, RenderLocation.Y, Size.Width, Size.Height, Color, 1, (float)Orientation.Degrees);
                         break;
+                }
+
+                if (IsHoverHighlighted)
+                {
+                    _engine.Rendering.DrawRectangle(renderTarget, RawRenderBounds,
+                        _engine.Rendering.Materials.Colors.Red, 0, 1, Orientation.RadiansSigned);
                 }
             }
         }

@@ -51,8 +51,6 @@ namespace Cos.Engine.Sprite
             var metadata = _engine.Assets.GetMetaData<SpriteMinimalBitmapMetadata>(spriteImagePath);
 
             Speed = metadata.Speed;
-            Throttle = metadata.Throttle;
-            MaxThrottle = metadata.MaxThrottle;
 
             SetImage(spriteImagePath);
         }

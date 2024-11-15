@@ -1,21 +1,33 @@
 ﻿using Cos.Engine;
 using Cos.Engine.Sprite;
+using Cos.Engine.Sprite._Superclass._Root;
+using Cos.Library.Mathematics;
 using Cos.ScenarioEdit.Hardware;
 using NTDLS.Helpers;
 using ScenarioEdit.Tiling;
 using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using static Cos.Library.CosConstants;
+using static ScenarioEdit.EditorConstants;
+using static ScenarioEdit.UndoItem;
 
 namespace ScenarioEdit
 {
     public partial class FormMain : Form
     {
-        private Random Rand = new Random();
-
-        private readonly EngineCore _engine;
+        private Random _random = new();
+        private readonly UndoBuffer _undoBuffer;
+        private readonly NTDLS.Semaphore.PessimisticCriticalResource<EngineCore> _engine;
         private readonly Control _drawingSurface;
+        private PrimaryMode _currentPrimaryMode = PrimaryMode.Select;
+        private Point? _mouseDownPos = null;
+        private CosVector? _mouseDownRenderWindowPosition;
+        readonly List<SpriteBase> _hoverIntersections = new();
+        private SpriteBase? _lastHoverTile;
 
         public FormMain()
         {
@@ -23,7 +35,9 @@ namespace ScenarioEdit
 
             _drawingSurface = new Control();
             Controls.Add(_drawingSurface);
-            _engine = new EngineCore(_drawingSurface, CosEngineInitializationType.None);
+            var engineCode = new EngineCore(_drawingSurface, CosEngineInitializationType.None);
+            _engine = new NTDLS.Semaphore.PessimisticCriticalResource<EngineCore>(engineCode);
+            _undoBuffer = new UndoBuffer(engineCode);
         }
 
         public FormMain(Screen screen)
@@ -44,9 +58,12 @@ namespace ScenarioEdit
             };
             splitContainerBody.Panel1.Controls.Add(_drawingSurface);
 
-            _engine = new EngineCore(_drawingSurface, CosEngineInitializationType.Edit);
+            var engineCore = new EngineCore(_drawingSurface, CosEngineInitializationType.Edit);
 
-            _engine.OnShutdown += (EngineCore sender) =>
+            _engine = new NTDLS.Semaphore.PessimisticCriticalResource<EngineCore>(engineCore);
+            _undoBuffer = new UndoBuffer(engineCore);
+
+            engineCore.OnShutdown += (EngineCore sender) =>
             {   //If the engine is stopped, close the main form.
                 Invoke((MethodInvoker)delegate
                 {
@@ -55,52 +72,188 @@ namespace ScenarioEdit
             };
 
             Shown += (object? sender, EventArgs e)
-                => _engine.StartEngine();
+                => engineCore.StartEngine();
 
             FormClosed += (sender, e)
-                => _engine.ShutdownEngine();
+                => engineCore.ShutdownEngine();
 
-            _drawingSurface.GotFocus += (object? sender, EventArgs e) => _engine.Display.SetIsDrawingSurfaceFocused(true);
-            _drawingSurface.LostFocus += (object? sender, EventArgs e) => _engine.Display.SetIsDrawingSurfaceFocused(false);
+            _drawingSurface.GotFocus += (object? sender, EventArgs e) => engineCore.Display.SetIsDrawingSurfaceFocused(true);
+            _drawingSurface.LostFocus += (object? sender, EventArgs e) => engineCore.Display.SetIsDrawingSurfaceFocused(false);
+
+            _drawingSurface.Select();
+            _drawingSurface.Focus();
+
+            toolStripButtonShapeMode.Click += ToolStripButtonShapeMode_Click;
+            toolStripButtonSelectMode.Click += ToolStripButtonSelectMode_Click;
+            toolStripButtonInsertMode.Click += ToolStripButtonInsertMode_Click;
+            toolStripButtonUndo.Click += UndoToolStripMenuItem_Click;
+            toolStripButtonRedo.Click += RedoToolStripMenuItem_Click;
         }
 
         private void FormMain_Load(object sender, EventArgs e)
         {
             /*
-            drawingsurface.Dock = DockStyle.Fill;
-            drawingsurface.BackColor = Color.FromArgb(60, 60, 60);
             drawingsurface.PreviewKeyDown += drawingsurface_PreviewKeyDown;
-            drawingsurface.Paint += new PaintEventHandler(drawingsurface_Paint);
-            drawingsurface.MouseClick += new MouseEventHandler(drawingsurface_MouseClick);
             drawingsurface.MouseDoubleClick += new MouseEventHandler(drawingsurface_MouseDoubleClick);
-            drawingsurface.MouseDown += new MouseEventHandler(drawingsurface_MouseDown);
-            drawingsurface.MouseMove += new MouseEventHandler(drawingsurface_MouseMove);
-            drawingsurface.MouseUp += new MouseEventHandler(drawingsurface_MouseUp);
-
-            drawingsurface.Select();
-            drawingsurface.Focus();
             */
 
-            _drawingSurface.MouseClick += _drawingSurface_MouseClick;
+            _drawingSurface.MouseClick += DrawingSurface_MouseClick;
+            _drawingSurface.MouseMove += DrawingSurface_MouseMove;
+            _drawingSurface.MouseDown += DrawingSurface_MouseDown;
+            _drawingSurface.MouseUp += DrawingSurface_MouseUp;
 
             //_undoBuffer = new UndoBuffer(_core);
 
-            PopulateMaterials();
+            PopulateAllMaterials();
         }
 
-        private void _drawingSurface_MouseClick(object? sender, MouseEventArgs e)
+        #region Toolbar click events.
+
+        private void RedoToolStripMenuItem_Click(object? sender, EventArgs e)
         {
-            var spriteTile = new SpriteTile(_engine, @"Tiles\Overworld\Dirt\Center\1.png");
-
-            //spriteTile.X = 500;
-            //spriteTile.Y = 500;
-
-            _engine.Sprites.Add(spriteTile);
-
-            spriteTile.CenterInUniverse();
+            _undoBuffer.RollForward();
         }
 
-        void PopulateMaterials()
+        private void UndoToolStripMenuItem_Click(object? sender, EventArgs e)
+        {
+            _undoBuffer.RollBack();
+        }
+
+        private void ToolStripButtonShapeMode_Click(object? sender, EventArgs e)
+        {
+            _currentPrimaryMode = PrimaryMode.Shape;
+            toolStripButtonInsertMode.Checked = false;
+            toolStripButtonSelectMode.Checked = false;
+            toolStripButtonShapeMode.Checked = true;
+
+            //ClearMultiSelection();
+        }
+
+        private void ToolStripButtonSelectMode_Click(object? sender, EventArgs e)
+        {
+            _currentPrimaryMode = PrimaryMode.Select;
+            toolStripButtonInsertMode.Checked = false;
+            toolStripButtonSelectMode.Checked = true;
+            toolStripButtonShapeMode.Checked = false;
+
+            //ClearMultiSelection();
+        }
+
+        private void ToolStripButtonInsertMode_Click(object? sender, EventArgs e)
+        {
+            _currentPrimaryMode = PrimaryMode.Insert;
+            toolStripButtonInsertMode.Checked = true;
+            toolStripButtonSelectMode.Checked = false;
+            toolStripButtonShapeMode.Checked = false;
+
+            //ClearMultiSelection();
+        }
+
+        #endregion
+
+        private void DrawingSurface_MouseUp(object? sender, MouseEventArgs e)
+        {
+            //Here we keep keep track of the fact that the mouse is no longer being held down.
+            _mouseDownPos = null;
+            _mouseDownRenderWindowPosition = null;
+        }
+
+        private void DrawingSurface_MouseDown(object? sender, MouseEventArgs e)
+        {
+            _engine.Use(o =>
+            {
+                //Here we keep track of the position that the mouse was at when the mouse was pressed. We use this value for multiple purposes.
+                _mouseDownPos = new Point(e.X, e.Y);
+                _mouseDownRenderWindowPosition = o.Display.RenderWindowPosition.Clone();
+            });
+        }
+
+        private void DrawingSurface_MouseMove(object? sender, MouseEventArgs e)
+        {
+            _engine.Use(o =>
+            {
+                if (e.Button == MouseButtons.Middle && _mouseDownPos != null && _mouseDownRenderWindowPosition != null)
+                {
+                    //Used to drag the background offset (RenderWindowPosition).
+                    o.Display.RenderWindowPosition.X = _mouseDownRenderWindowPosition.X + _mouseDownPos.Value.X - e.X;
+                    o.Display.RenderWindowPosition.Y = _mouseDownRenderWindowPosition.Y + _mouseDownPos.Value.Y - e.Y;
+                }
+
+                var worldX = (e.X + o.Display.RenderWindowPosition.X);
+                var worldY = (e.Y + o.Display.RenderWindowPosition.Y);
+
+                var snappedX = (worldX + 16) - ((worldX + 16) % 32);
+                var snappedY = (worldY + 16) - ((worldY + 16) % 32);
+
+                toolStripStatusLabelMouseXY.Text = $"Window: {e.X:n0}x,{e.Y:n0}, World: {worldX:n0}x,{worldY:n0}, Tile: {snappedX:n0}x,{snappedY:n0}";
+
+                if (_lastHoverTile != null)
+                {
+                    string hoverText = $"[{_lastHoverTile.UID}]";
+                    toolStripStatusLabelHoverObject.Text = hoverText;
+                }
+                else
+                {
+                    toolStripStatusLabelHoverObject.Text = "<none>";
+                }
+                //toolStripStatusLabelDebug.Text
+
+                var intersections = o.Sprites.Intersections(worldX, worldY, 1, 1);
+
+                foreach (var previousIntersection in _hoverIntersections)
+                {
+                    previousIntersection.IsHoverHighlighted = false;
+                }
+
+                _hoverIntersections.Clear();
+                _hoverIntersections.AddRange(intersections.ToList());
+
+                foreach (var previousIntersection in _hoverIntersections)
+                {
+                    previousIntersection.IsHoverHighlighted = true;
+                }
+
+                _lastHoverTile = _hoverIntersections.OrderByDescending(o => o.UID).FirstOrDefault();
+            });
+        }
+
+        private void DrawingSurface_MouseClick(object? sender, MouseEventArgs e)
+        {
+            _engine.Use(o =>
+            {
+                var worldX = (e.X + o.Display.RenderWindowPosition.X);
+                var worldY = (e.Y + o.Display.RenderWindowPosition.Y);
+
+                //Add tile.
+                if (_currentPrimaryMode == PrimaryMode.Insert && e.Button == MouseButtons.Left)
+                {
+                    var spriteTile = new SpriteTile(o, @"Tiles\Overworld\Dirt\Center\1.png");
+
+                    var snappedX = (worldX + 16) - ((worldX + 16) % 32);
+                    var snappedY = (worldY + 16) - ((worldY + 16) % 32);
+
+                    spriteTile.X = snappedX;
+                    spriteTile.Y = snappedY;
+
+                    _undoBuffer.Record(spriteTile, ActionPerformed.Created);
+                    o.Sprites.Add(spriteTile);
+                    //spriteTile.CenterInUniverse();
+                }
+                //Delete tile.
+                else if (_currentPrimaryMode == PrimaryMode.Insert && e.Button == MouseButtons.Right)
+                {
+                    var intersections = o.Sprites.Intersections(worldX, worldY, 1, 1);
+
+                    foreach (var intersection in intersections)
+                    {
+                        _undoBuffer.Record(intersection, ActionPerformed.Deleted);
+                        intersection.QueueForDelete();
+                    }
+                }
+            });
+        }
+
+        void PopulateAllMaterials()
         {
             string assetsPath = @"C:\NTDLS\CastleOfStorms\Installer\Assets";
 
@@ -111,16 +264,16 @@ namespace ScenarioEdit
                     continue;
                 }
 
-                AddAssetDirectory(d);
+                PopulateAssetDirectory(d);
             }
         }
 
-        private void AddAssetDirectory(string directory, TreeNode? parentNode = null)
+        private void PopulateAssetDirectory(string directory, TreeNode? parentNode = null)
         {
             if (File.Exists(Path.Combine(directory, "tilepack.json")))
             {
                 //This is a tile pack.
-                AddTilePack(parentNode.EnsureNotNull(), directory);
+                PopulateTilePack(parentNode.EnsureNotNull(), directory);
             }
             else if (File.Exists(Path.Combine(directory, "metadata.json")))
             {
@@ -140,12 +293,12 @@ namespace ScenarioEdit
                         continue;
                     }
 
-                    AddAssetDirectory(d, thisFolder);
+                    PopulateAssetDirectory(d, thisFolder);
                 }
             }
         }
 
-        private void AddTilePack(TreeNode parentNode, string path)
+        private void PopulateTilePack(TreeNode parentNode, string path)
         {
             var tilePackNode = TreeNodeFactory.CreateTreeNodeTilePack(path);
             parentNode.Nodes.Add(tilePackNode);

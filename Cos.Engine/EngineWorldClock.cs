@@ -4,7 +4,6 @@ using Cos.Engine.TickController._Superclass;
 using Cos.Library;
 using Cos.Library.Mathematics;
 using Cos.Rendering;
-using NTDLS.DelegateThreadPooling;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -190,12 +189,12 @@ namespace Cos.Engine
         {
             var player = _engine.Player.Sprite;
 
-            string playerStatsText =
-                 $"      Hull: {player.HullHealth:n0} (Shields: {player.ShieldHealth:n0}) | Bounty: ${player.Metadata.Bounty}\r\n";
+            //string playerStatsText =
+            //     $"      Hull: {player.HullHealth:n0} (Shields: {player.ShieldHealth:n0}) | Bounty: ${player.Metadata.Bounty}\r\n";
 
             //playerStatsText += $"{_engine.Display.FrameCounter.AverageFrameRate:n2}fps";
 
-            _engine.Sprites.TextBlocks.PlayerStatsText.Text = playerStatsText;
+            _engine.Sprites.TextBlocks.PlayerStatsText.Text = "debug text";
 
             //_engine.Sprites.DebugText.Text = "Anything we need to know about?";
         }

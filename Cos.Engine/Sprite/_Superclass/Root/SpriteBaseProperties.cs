@@ -1,5 +1,4 @@
 ﻿using Cos.Library;
-using Cos.Library.ExtensionMethods;
 using Cos.Library.Mathematics;
 using Cos.Library.Sprite;
 using SharpDX.Mathematics.Interop;
@@ -33,33 +32,10 @@ namespace Cos.Engine.Sprite._Superclass._Root
         /// </summary>
         public CosVector MovementVector { get; set; } = new();
 
-        private float _throttle = 1.0f;
-        /// <summary>
-        /// Percentage of speed expressed as a decimal percentage from 0.0 (stopped) to float.max.
-        /// Note that a throttle of 2.0 is twice the normal speed.
-        /// </summary>
-        public float Throttle
-        {
-            get => _throttle;
-            set
-            {
-                _throttle = value.Clamp(0, float.MaxValue);
-                //RecalculateMovementVector(); //Seems like unneeded overhead.
-            }
-        }
-
-        private float _maxThrottle = 1.0f;
-        /// <summary>
-        /// The general maximum throttle that can be applied. This can be considered the "boost" speed.
-        /// </summary>
-        public float MaxThrottle
-        {
-            get => _maxThrottle;
-            set => _maxThrottle = value.Clamp(0, float.MaxValue);
-        }
-
         #endregion
 
+        public bool IsHoverHighlighted { get; set; } = false;
+        public bool IsSelectedHighlighted { get; set; } = false;
 
         /// <summary>
         /// Number or radians to rotate the sprite Orientation along its center at each call to ApplyMotion().
@@ -67,7 +43,7 @@ namespace Cos.Engine.Sprite._Superclass._Root
         /// </summary>
         public float RotationSpeed { get; set; } = 0;
 
-        private CosVector _orientation = new CosVector();
+        private CosVector _orientation = new();
         /// <summary>
         /// The angle in which the sprite is pointing, note that this is NOT the travel angle.
         /// The travel angle is baked into the MovementVector. If you need the movement vector
@@ -88,10 +64,7 @@ namespace Cos.Engine.Sprite._Superclass._Root
         public SharpDX.Direct2D1.Bitmap? GetImage() => _image;
         public string SpriteTag { get; set; }
         public uint UID { get; private set; } = CosSequenceGenerator.Next();
-        public uint OwnerUID { get; set; }
         public bool IsWithinCurrentScaledScreenBounds => _engine.Display.GetCurrentScaledScreenBounds().IntersectsWith(RenderBounds);
-        public int HullHealth { get; private set; } = 0; //Ship hit-points.
-        public int ShieldHealth { get; private set; } = 0; //Shield hit-points, these take 1/2 damage.
 
         /// <summary>
         /// The sprite still exists, but is not functional (e.g. its been shot and exploded).

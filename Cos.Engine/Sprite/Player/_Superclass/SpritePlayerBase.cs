@@ -15,7 +15,6 @@ namespace Cos.Engine.Sprite.Player._Superclass
         {
             Orientation = new CosVector(0);
             RecalculateMovementVector();
-            Throttle = 0;
 
             CenterInUniverse();
         }

@@ -64,6 +64,27 @@ namespace Cos.Engine
 
         #endregion
 
+        public EngineCore()
+        {
+            var drawingSurface = new Control();
+
+            ExecutionType = CosEngineInitializationType.None;
+
+            Settings = LoadSettings();
+
+            Display = new DisplayManager(this, drawingSurface);
+            Rendering = new CosRendering(Settings, drawingSurface, Display.CanvasSize);
+            Assets = new AssetManager(this);
+            Events = new EventTickController(this);
+            Sprites = new SpriteManager(this);
+            Input = new InputManager(this);
+
+            Audio = new AudioManager(this);
+            Player = new PlayerSpriteTickController(this);
+
+            _worldClock = new EngineWorldClock(this);
+        }
+
         /// <summary>
         /// Initializes a new instance of the game engine.
         /// </summary>

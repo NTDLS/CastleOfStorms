@@ -32,8 +32,6 @@ namespace Cos.Engine.Sprite
             var metadata = _engine.Assets.GetMetaData<SpriteAnimationMetadata>(spriteSheetFileName);
 
             Speed = metadata.Speed;
-            Throttle = metadata.Throttle;
-            MaxThrottle = metadata.MaxThrottle;
 
             SetImage(spriteSheetFileName);
             FramesPerSecond = metadata.FramesPerSecond;

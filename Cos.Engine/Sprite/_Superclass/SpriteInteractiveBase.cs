@@ -49,10 +49,6 @@ namespace Cos.Engine.Sprite._Superclass
 
             // Set standard variables here:
             Speed = Metadata.Speed;
-            Throttle = Metadata.Throttle;
-            MaxThrottle = Metadata.MaxThrottle;
-
-            SetHullHealth(Metadata.Hull);
         }
 
         public override void Explode()

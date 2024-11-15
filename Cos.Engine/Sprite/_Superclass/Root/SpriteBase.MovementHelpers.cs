@@ -59,7 +59,6 @@ namespace Cos.Engine.Sprite._Superclass._Root
             return false;
         }
 
-
         /// <summary>
         /// Rotates the objects movement vector by the specified amount if it not pointing at the target
         /// angle (with given tolerance) then recalculates the PointingAngle.

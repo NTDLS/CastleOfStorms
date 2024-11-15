@@ -1,5 +1,4 @@
-﻿using Cos.Library.ExtensionMethods;
-using Cos.Library.Mathematics;
+﻿using Cos.Library.Mathematics;
 using Cos.Library.Sprite;
 using System.Drawing;
 
@@ -33,6 +32,12 @@ namespace Cos.Engine.Sprite._Superclass._Root
             OnQueuedForDelete?.Invoke(this);
         }
 
+        public void Reset()
+        {
+            _readyForDeletion = false;
+            Visible = true;
+        }
+
         /// <summary>
         /// Sets the sprites center to the center of the screen.
         /// </summary>
@@ -41,24 +46,6 @@ namespace Cos.Engine.Sprite._Superclass._Root
             X = _engine.Display.CanvasSize.Width / 2 /*- Size.Width / 2*/;
             Y = _engine.Display.CanvasSize.Height / 2 /*- Size.Height / 2*/;
         }
-
-        public void SetHullHealth(int points)
-        {
-            HullHealth = 0;
-            AddHullHealth(points);
-        }
-
-        public virtual void AddHullHealth(int pointsToAdd)
-            => HullHealth = (HullHealth + pointsToAdd).Clamp(1, _engine.Settings.MaxHullHealth);
-
-        public virtual void SetShieldHealth(int points)
-        {
-            ShieldHealth = 0;
-            AddShieldHealth(points);
-        }
-
-        public virtual void AddShieldHealth(int pointsToAdd)
-            => ShieldHealth = (ShieldHealth + pointsToAdd).Clamp(1, _engine.Settings.MaxShieldHealth);
 
         public void SetImage(SharpDX.Direct2D1.Bitmap bitmap)
         {
@@ -95,8 +82,6 @@ namespace Cos.Engine.Sprite._Superclass._Root
         public virtual void Cleanup()
         {
             Visible = false;
-
-            _engine.Sprites.QueueAllForDeletionByOwner(UID);
         }
     }
 }
