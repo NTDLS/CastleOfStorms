@@ -189,7 +189,7 @@ namespace ScenarioEdit
 
                 if (_lastHoverTile != null)
                 {
-                    string hoverText = $"[{_lastHoverTile.UID}]";
+                    string hoverText = $"[{_lastHoverTile.ToString()}]";
                     toolStripStatusLabelHoverObject.Text = hoverText;
                 }
                 else
@@ -197,6 +197,8 @@ namespace ScenarioEdit
                     toolStripStatusLabelHoverObject.Text = "<none>";
                 }
                 //toolStripStatusLabelDebug.Text
+
+                #region De-Highlight and highlight hover tile(s).
 
                 var intersections = o.Sprites.Intersections(worldX, worldY, 1, 1);
 
@@ -212,6 +214,8 @@ namespace ScenarioEdit
                 {
                     previousIntersection.IsHoverHighlighted = true;
                 }
+
+                #endregion
 
                 _lastHoverTile = _hoverIntersections.OrderByDescending(o => o.UID).FirstOrDefault();
             });
