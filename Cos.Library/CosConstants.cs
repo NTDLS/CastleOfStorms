@@ -4,6 +4,19 @@
     {
         public static string FriendlyName = "Castle of Storms";
 
+        public enum TilePackTileType
+        {
+            Top,
+            Left,
+            Center,
+            Bottom,
+            BottomLeft,
+            BottomRight,
+            TopLeft,
+            TopRight
+        }
+
+
         public enum CosEngineInitializationType
         {
             None,

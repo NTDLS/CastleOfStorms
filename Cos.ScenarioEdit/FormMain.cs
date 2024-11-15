@@ -5,6 +5,7 @@ using Cos.Library.Mathematics;
 using Cos.ScenarioEdit.Hardware;
 using NTDLS.Helpers;
 using ScenarioEdit.Tiling;
+using ScenarioEdit.Tiling.TreeNodes;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -88,6 +89,8 @@ namespace ScenarioEdit
             toolStripButtonInsertMode.Click += ToolStripButtonInsertMode_Click;
             toolStripButtonUndo.Click += UndoToolStripMenuItem_Click;
             toolStripButtonRedo.Click += RedoToolStripMenuItem_Click;
+
+            ToolStripButtonInsertMode_Click(null, new());
         }
 
         private void FormMain_Load(object sender, EventArgs e)
@@ -231,17 +234,10 @@ namespace ScenarioEdit
                 //Add tile.
                 if (_currentPrimaryMode == PrimaryMode.Insert && e.Button == MouseButtons.Left)
                 {
-                    var spriteTile = new SpriteTile(o, @"Tiles\Overworld\Dirt\Center\1.png");
-
                     var snappedX = (worldX + 16) - ((worldX + 16) % 32);
                     var snappedY = (worldY + 16) - ((worldY + 16) % 32);
 
-                    spriteTile.X = snappedX;
-                    spriteTile.Y = snappedY;
-
-                    _undoBuffer.Record(spriteTile, ActionPerformed.Created);
-                    o.Sprites.Add(spriteTile);
-                    //spriteTile.CenterInUniverse();
+                    PlaceTile(snappedX, snappedY);
                 }
                 //Delete tile.
                 else if (_currentPrimaryMode == PrimaryMode.Insert && e.Button == MouseButtons.Right)
@@ -250,12 +246,64 @@ namespace ScenarioEdit
 
                     foreach (var intersection in intersections)
                     {
-                        _undoBuffer.Record(intersection, ActionPerformed.Deleted);
+                        var undoActionCollection = new UndoActionCollection();
+                        undoActionCollection.Record(intersection, ActionPerformed.Deleted);
+                        _undoBuffer.Record(undoActionCollection);
                         intersection.QueueForDelete();
                     }
                 }
             });
         }
+
+        /// <summary>
+        /// Places the selected which is selected in the materials view, at the specified location.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public void PlaceTile(float x, float y)
+        {
+            _engine.Use(o =>
+            {
+                if (treeViewTiles.SelectedNode == null)
+                {
+                    return;
+                }
+
+                if (treeViewTiles.SelectedNode is TreeNodeTilePack tilePack)
+                {
+                    var undoActionCollection = new UndoActionCollection();
+
+                    int randomIndex = _random.Next(tilePack.Meta.Center.Count);
+                    string randomItem = tilePack.Meta.Center[randomIndex];
+
+                    //If we are placing a tile on top of another TilePack tile from the same collection, then delete it.
+                    var intersections = o.Sprites.Intersections(x, y, 1, 1)
+                        .Where(o => o is SpriteTilePackTile tilePackTile && tilePackTile.CollectionId == tilePack.Meta.CollectionId);
+                    foreach (var intersection in _hoverIntersections)
+                    {
+                        undoActionCollection.Record(intersection, ActionPerformed.Deleted);
+                        intersection.QueueForDelete();
+                    }
+
+                    var spriteTile = new SpriteTilePackTile(o, Path.Join(tilePack.FullPath, randomItem), tilePack.Meta.CollectionId, TilePackTileType.Center)
+                    {
+                        X = x,
+                        Y = y
+                    };
+
+                    undoActionCollection.Record(spriteTile, ActionPerformed.Created);
+                    o.Sprites.Add(spriteTile);
+
+                    _undoBuffer.Record(undoActionCollection);
+                }
+                else
+                {
+                    //...individual tiles?
+                }
+            });
+        }
+
+        #region Populate matrials/assets.
 
         void PopulateAllMaterials()
         {
@@ -269,6 +317,12 @@ namespace ScenarioEdit
                 }
 
                 PopulateAssetDirectory(d);
+            }
+
+            //Expand all top level nodes.
+            foreach (TreeNode node in treeViewTiles.Nodes)
+            {
+                node.Expand();
             }
         }
 
@@ -308,37 +362,6 @@ namespace ScenarioEdit
             parentNode.Nodes.Add(tilePackNode);
         }
 
-        /*
-        public void PopChildNodes(TreeNode parent, string partialPath)
-        {
-
-            foreach (string d in Directory.GetDirectories(Constants.BaseCommonAssetPath + _partialTilesPath + partialPath))
-            {
-                var directory = Path.GetFileName(d);
-                if (Utility.IgnoreFileName(directory) || directory.ToLower() == "player")
-                {
-                    continue;
-                }
-
-                var directoryNode = parent.Nodes.Add(_partialTilesPath + directory, directory, "<folder>");
-                directoryNode.Nodes.Add("<dummy>");
-            }
-
-            foreach (var f in Directory.GetFiles(Constants.BaseCommonAssetPath + _partialTilesPath + partialPath, "*.png"))
-            {
-                if (Utility.IgnoreFileName(f))
-                {
-                    continue;
-                }
-                var file = new FileInfo(f);
-
-                string fileKey = $"{_partialTilesPath}{partialPath}\\{Path.GetFileNameWithoutExtension(file.Name)}";
-
-                _assetBrowserImageList.Images.Add(fileKey, SpriteCache.GetBitmapCached(file.FullName));
-
-                parent.Nodes.Add(fileKey, Path.GetFileNameWithoutExtension(file.Name), fileKey, fileKey);
-            }
-        }
-        */
+        #endregion
     }
 }

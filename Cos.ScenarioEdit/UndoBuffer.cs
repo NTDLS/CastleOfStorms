@@ -1,6 +1,4 @@
 ﻿using Cos.Engine;
-using Cos.Engine.Sprite._Superclass._Root;
-using Cos.Library.Mathematics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,58 +22,36 @@ namespace ScenarioEdit
         }
 
         private int RollingIndex { get; set; }
-        private List<UndoItem> Items { get; set; } = new List<UndoItem>();
+        private readonly List<UndoActionCollection> _actionsCollection = new();
 
-        public void Record(List<SpriteBase> tiles, ActionPerformed action, CosVector? offset = null)
+        public void Record(UndoActionCollection collection)
         {
-            if (RollingIndex != Items.Count)
+            if (RollingIndex != _actionsCollection.Count)
             {
-                Items.Clear();
-                RollingIndex = 0;
+                //Truncate the undo collection at the current index.
+                var limitedSnapshot = _actionsCollection.Take(RollingIndex).ToList();
+                _actionsCollection.Clear();
+                _actionsCollection.AddRange(limitedSnapshot);
+                RollingIndex = _actionsCollection.Count;
             }
 
-            var item = new UndoItem()
-            {
-                Tiles = tiles,
-                Action = action,
-                Offset = offset
-            };
-
-            Items.Add(item);
-
-            RollingIndex++;
-        }
-
-        public void Record(SpriteBase tile, ActionPerformed action)
-        {
-            if (RollingIndex != Items.Count)
-            {
-                Items.Clear();
-                RollingIndex = 0;
-            }
-
-            var tiles = new List<SpriteBase>
-            {
-                tile
-            };
-
-            Items.Add(new UndoItem()
-            {
-                Tiles = tiles,
-                Action = action
-            });
+            _actionsCollection.Add(collection);
 
             RollingIndex++;
         }
 
         public void RollForward()
         {
-            if (RollingIndex == Items.Count)
+            if (RollingIndex == _actionsCollection.Count)
             {
                 return;
             }
 
-            PerformAction(Items[RollingIndex], Direction.Forward);
+            var actionsCollection = _actionsCollection[RollingIndex];
+            foreach (var action in actionsCollection.Actions)
+            {
+                PerformAction(action, Direction.Forward);
+            }
 
             RollingIndex++;
         }
@@ -89,7 +65,11 @@ namespace ScenarioEdit
 
             RollingIndex--;
 
-            PerformAction(Items[RollingIndex], Direction.Backward);
+            var actionsCollection = _actionsCollection[RollingIndex];
+            foreach (var action in actionsCollection.Actions)
+            {
+                PerformAction(action, Direction.Backward);
+            }
         }
 
         private void PerformAction(UndoItem item, Direction direction)

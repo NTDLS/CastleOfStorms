@@ -1,5 +1,6 @@
 ﻿using NTDLS.Helpers;
 using ScenarioEdit.Properties;
+using ScenarioEdit.Tiling.TreeNodes;
 using System.IO;
 using System.Windows.Forms;
 
@@ -32,31 +33,6 @@ namespace ScenarioEdit.Tiling
             }
 
             return new TreeNodeTilePack(tilePackMeta, imageKey);
-        }
-
-        public class TreeNodeFolder : TreeNode
-        {
-            public string Directory { get; private set; }
-            public TreeNodeFolder(string path)
-            {
-                Directory = path;
-                Text = Path.GetFileName(path);
-                ImageKey = "<folder>";
-                SelectedImageKey = "<folder>";
-            }
-        }
-
-        public class TreeNodeTilePack : TreeNode
-        {
-            public TilePack Meta { get; private set; }
-
-            public TreeNodeTilePack(TilePack meta, string imageKey)
-            {
-                Text = meta.Name;
-                Meta = meta;
-                ImageKey = imageKey;
-                SelectedImageKey = imageKey;
-            }
         }
     }
 }
