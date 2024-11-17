@@ -6,6 +6,7 @@ using Cos.ScenarioEdit.Hardware;
 using NTDLS.Helpers;
 using ScenarioEdit.Tiling;
 using ScenarioEdit.Tiling.TreeNodes;
+using ScenarioEdit.Undo;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -14,7 +15,7 @@ using System.Linq;
 using System.Windows.Forms;
 using static Cos.Library.CosConstants;
 using static ScenarioEdit.EditorConstants;
-using static ScenarioEdit.UndoItem;
+using static ScenarioEdit.Undo.UndoItem;
 
 namespace ScenarioEdit
 {
@@ -104,8 +105,6 @@ namespace ScenarioEdit
             _drawingSurface.MouseMove += DrawingSurface_MouseMove;
             _drawingSurface.MouseDown += DrawingSurface_MouseDown;
             _drawingSurface.MouseUp += DrawingSurface_MouseUp;
-
-            //_undoBuffer = new UndoBuffer(_core);
 
             PopulateAllMaterials();
         }
@@ -246,9 +245,7 @@ namespace ScenarioEdit
 
                     foreach (var intersection in intersections)
                     {
-                        var undoActionCollection = new UndoActionCollection();
-                        undoActionCollection.Record(intersection, ActionPerformed.Deleted);
-                        _undoBuffer.Record(undoActionCollection);
+                        _undoBuffer.Record(intersection, ActionPerformed.Deleted);
                         intersection.QueueForDelete();
                     }
                 }
@@ -271,7 +268,7 @@ namespace ScenarioEdit
 
                 if (treeViewTiles.SelectedNode is TreeNodeTilePack tilePack)
                 {
-                    var undoActionCollection = new UndoActionCollection();
+                    var undoItemCollection = new UndoItemCollection();
 
                     int randomIndex = _random.Next(tilePack.Meta.Center.Count);
                     string randomItem = tilePack.Meta.Center[randomIndex];
@@ -281,7 +278,7 @@ namespace ScenarioEdit
                         .Where(o => o is SpriteTilePackTile tilePackTile && tilePackTile.CollectionId == tilePack.Meta.CollectionId);
                     foreach (var intersection in _hoverIntersections)
                     {
-                        undoActionCollection.Record(intersection, ActionPerformed.Deleted);
+                        undoItemCollection.Record(intersection, ActionPerformed.Deleted);
                         intersection.QueueForDelete();
                     }
 
@@ -291,10 +288,10 @@ namespace ScenarioEdit
                         Y = y
                     };
 
-                    undoActionCollection.Record(spriteTile, ActionPerformed.Created);
+                    undoItemCollection.Record(spriteTile, ActionPerformed.Created);
                     o.Sprites.Add(spriteTile);
 
-                    _undoBuffer.Record(undoActionCollection);
+                    _undoBuffer.Record(undoItemCollection);
                 }
                 else
                 {

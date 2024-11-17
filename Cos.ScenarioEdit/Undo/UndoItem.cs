@@ -2,7 +2,7 @@
 using Cos.Library.Mathematics;
 using System.Collections.Generic;
 
-namespace ScenarioEdit
+namespace ScenarioEdit.Undo
 {
     public class UndoItem
     {
@@ -14,7 +14,6 @@ namespace ScenarioEdit
         }
 
         public ActionPerformed Action { get; set; }
-
         public List<SpriteBase> Tiles { get; set; } = new();
 
         /// <summary>

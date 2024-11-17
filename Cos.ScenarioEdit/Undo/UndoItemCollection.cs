@@ -1,13 +1,13 @@
 ﻿using Cos.Engine.Sprite._Superclass._Root;
 using Cos.Library.Mathematics;
 using System.Collections.Generic;
-using static ScenarioEdit.UndoItem;
+using static ScenarioEdit.Undo.UndoItem;
 
-namespace ScenarioEdit
+namespace ScenarioEdit.Undo
 {
-    public class UndoActionCollection
+    public class UndoItemCollection
     {
-        public List<UndoItem> Actions { get; set; } = new();
+        public List<UndoItem> Items { get; set; } = new();
 
         public void Record(List<SpriteBase> tiles, ActionPerformed action, CosVector? offset = null)
         {
@@ -18,20 +18,14 @@ namespace ScenarioEdit
                 Offset = offset
             };
 
-            Actions.Add(item);
+            Items.Add(item);
         }
 
         public void Record(SpriteBase tile, ActionPerformed action)
         {
-
-            var tiles = new List<SpriteBase>
+            Items.Add(new UndoItem()
             {
-                tile
-            };
-
-            Actions.Add(new UndoItem()
-            {
-                Tiles = tiles,
+                Tiles = [tile],
                 Action = action
             });
         }

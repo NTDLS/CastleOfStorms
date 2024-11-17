@@ -1,12 +1,13 @@
 ﻿using Cos.Engine;
+using Cos.Engine.Sprite._Superclass._Root;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using static ScenarioEdit.UndoItem;
+using static ScenarioEdit.Undo.UndoItem;
 
-namespace ScenarioEdit
+namespace ScenarioEdit.Undo
 {
-    public class UndoBuffer
+    public class UndoBuffer(EngineCore core)
     {
         private enum Direction
         {
@@ -14,59 +15,66 @@ namespace ScenarioEdit
             Backward
         }
 
-        public EngineCore Core { get; set; }
+        private int _undoIndex = 0;
+        private readonly EngineCore _core = core;
+        private readonly List<UndoItemCollection> _undoItemCollection = new();
 
-        public UndoBuffer(EngineCore core)
+        /// <summary>
+        /// Record a single action.
+        /// </summary>
+        public void Record(SpriteBase tile, ActionPerformed action)
         {
-            Core = core;
+            var undoActionCollection = new UndoItemCollection();
+            undoActionCollection.Record(tile, action);
+            Record(undoActionCollection);
         }
 
-        private int RollingIndex { get; set; }
-        private readonly List<UndoActionCollection> _actionsCollection = new();
-
-        public void Record(UndoActionCollection collection)
+        /// <summary>
+        /// Record a group of actions.
+        /// </summary>
+        public void Record(UndoItemCollection collection)
         {
-            if (RollingIndex != _actionsCollection.Count)
+            if (_undoIndex != _undoItemCollection.Count)
             {
                 //Truncate the undo collection at the current index.
-                var limitedSnapshot = _actionsCollection.Take(RollingIndex).ToList();
-                _actionsCollection.Clear();
-                _actionsCollection.AddRange(limitedSnapshot);
-                RollingIndex = _actionsCollection.Count;
+                var limitedSnapshot = _undoItemCollection.Take(_undoIndex).ToList();
+                _undoItemCollection.Clear();
+                _undoItemCollection.AddRange(limitedSnapshot);
+                _undoIndex = _undoItemCollection.Count;
             }
 
-            _actionsCollection.Add(collection);
+            _undoItemCollection.Add(collection);
 
-            RollingIndex++;
+            _undoIndex++;
         }
 
         public void RollForward()
         {
-            if (RollingIndex == _actionsCollection.Count)
+            if (_undoIndex == _undoItemCollection.Count)
             {
                 return;
             }
 
-            var actionsCollection = _actionsCollection[RollingIndex];
-            foreach (var action in actionsCollection.Actions)
+            var actionsCollection = _undoItemCollection[_undoIndex];
+            foreach (var action in actionsCollection.Items)
             {
                 PerformAction(action, Direction.Forward);
             }
 
-            RollingIndex++;
+            _undoIndex++;
         }
 
         public void RollBack()
         {
-            if (RollingIndex == 0)
+            if (_undoIndex == 0)
             {
                 return;
             }
 
-            RollingIndex--;
+            _undoIndex--;
 
-            var actionsCollection = _actionsCollection[RollingIndex];
-            foreach (var action in actionsCollection.Actions)
+            var actionsCollection = _undoItemCollection[_undoIndex];
+            foreach (var action in actionsCollection.Items)
             {
                 PerformAction(action, Direction.Backward);
             }
@@ -83,19 +91,19 @@ namespace ScenarioEdit
             else if ((direction == Direction.Backward && item.Action == ActionPerformed.Deleted)
                 || (direction == Direction.Forward && item.Action == ActionPerformed.Created))
             {
-                Core.Sprites.All().Where(o => o.IsSelectedHighlighted == true)
+                _core.Sprites.All().Where(o => o.IsSelectedHighlighted == true)
                     .ToList().ForEach(o => o.IsSelectedHighlighted = false);
 
                 foreach (var tile in item.Tiles)
                 {
                     tile.Reset();
                     tile.IsSelectedHighlighted = true;
-                    Core.Sprites.Add(tile);
+                    _core.Sprites.Add(tile);
                 }
             }
             else if (item.Action == ActionPerformed.Moved)
             {
-                Core.Sprites.All().Where(o => o.IsSelectedHighlighted == true)
+                _core.Sprites.All().Where(o => o.IsSelectedHighlighted == true)
                    .ToList().ForEach(o => o.IsSelectedHighlighted = false);
 
                 foreach (var tile in item.Tiles)
