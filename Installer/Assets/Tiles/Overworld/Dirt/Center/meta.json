@@ -1,3 +1,5 @@
 {
+	"Name": "Dirt",
+	"ZOrder": -1,
 	"Walkable": true
 }

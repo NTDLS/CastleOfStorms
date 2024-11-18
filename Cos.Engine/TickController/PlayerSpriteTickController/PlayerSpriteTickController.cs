@@ -1,7 +1,6 @@
 ﻿using Cos.Engine.Sprite.Player;
 using Cos.Engine.Sprite.Player._Superclass;
 using Cos.Engine.TickController._Superclass;
-using Cos.GameEngine.Persistent;
 using Cos.Library;
 using Cos.Library.Mathematics;
 using System;
@@ -18,7 +17,6 @@ namespace Cos.Engine.TickController.PlayerSpriteTickController
         private readonly EngineCore _engine;
         private readonly Stopwatch _inputDelay = new();
 
-        public PlayerStats Stats { get; set; } = new(); //This should be saved.
         public SpritePlayerBase Sprite { get; set; }
 
         public PlayerSpriteTickController(EngineCore engine)

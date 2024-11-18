@@ -1,5 +1,5 @@
 ﻿using Cos.Engine.Sprite._Superclass._Root;
-using Cos.Engine.Sprite.SupportingClasses.Metadata;
+using Cos.GameEngine.Sprite.SupportingClasses.Metadata;
 using Cos.Library.ExtensionMethods;
 using Cos.Library.Mathematics;
 using System;
@@ -48,7 +48,7 @@ namespace Cos.Engine.Sprite
 
         private void SetImageAndLoadMetadata(string spriteImagePath)
         {
-            var metadata = _engine.Assets.GetMetaData<SpriteMinimalBitmapMetadata>(spriteImagePath);
+            var metadata = _engine.Assets.GetMetaData<BaseMetaData>(spriteImagePath);
 
             Speed = metadata.Speed;
 

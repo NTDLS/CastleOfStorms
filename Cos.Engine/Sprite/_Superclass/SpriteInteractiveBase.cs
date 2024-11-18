@@ -13,8 +13,8 @@ namespace Cos.Engine.Sprite._Superclass
     public class SpriteInteractiveBase : SpriteBase
     {
         public CosRenewableResources RenewableResources { get; set; } = new();
-        private InteractiveSpriteMetadata? _metadata = null;
-        public InteractiveSpriteMetadata Metadata => _metadata ?? throw new NullReferenceException();
+        private BaseMetaData? _metadata = null;
+        public BaseMetaData Metadata => _metadata ?? throw new NullReferenceException();
 
         public SpriteInteractiveBase(EngineCore engine, string? imagePath)
             : base(engine)

@@ -34,6 +34,7 @@ namespace Cos.Engine.Sprite._Superclass._Root
 
         public void Reset()
         {
+            IsDeadOrExploded = false;
             _readyForDeletion = false;
             Visible = true;
         }

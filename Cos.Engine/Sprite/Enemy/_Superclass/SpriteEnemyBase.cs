@@ -1,5 +1,4 @@
 ﻿using Cos.Engine.Sprite._Superclass;
-using Cos.Library;
 using Cos.Library.Mathematics;
 
 namespace Cos.Engine.Sprite.Enemy._Superclass
@@ -28,11 +27,6 @@ namespace Cos.Engine.Sprite.Enemy._Superclass
 
         public override void Explode()
         {
-            _engine.Player.Stats.Bounty += Metadata.Bounty;
-
-            if (CosRandom.PercentChance(10))
-            {
-            }
             base.Explode();
         }
 

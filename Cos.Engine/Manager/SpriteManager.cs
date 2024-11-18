@@ -115,12 +115,6 @@ namespace Cos.Engine.Manager
             _collection.RemoveAll(o => o.IsQueuedForDeletion);
 
             _engine.Events.CleanupQueuedForDeletion();
-
-            if (_engine.Player.Sprite.IsDeadOrExploded)
-            {
-                _engine.Player.Sprite.Visible = false;
-                _engine.Player.Sprite.ReviveDeadOrExploded();
-            }
         }
 
         /// <summary>

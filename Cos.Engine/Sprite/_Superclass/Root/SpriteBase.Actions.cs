@@ -2,11 +2,6 @@
 {
     public partial class SpriteBase
     {
-        public void ReviveDeadOrExploded()
-        {
-            IsDeadOrExploded = false;
-        }
-
         public virtual void Explode()
         {
             IsDeadOrExploded = true;

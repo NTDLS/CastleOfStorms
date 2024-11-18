@@ -18,26 +18,5 @@ namespace Cos.Engine.Sprite.Player._Superclass
 
             CenterInUniverse();
         }
-
-        public string GetLoadoutHelpText()
-        {
-            string result = $"             Name : {Metadata.Name}\n";
-            result += $"             Hull : {Metadata.Hull:n0}\n";
-            result += $"            Speed : {Metadata.Speed:n1}\n";
-            result += $"         Throttle : {Metadata.MaxThrottle:n1}\n";
-            result += $"\n{Metadata.Description}";
-
-            return result;
-        }
-
-        /// <summary>
-        /// Resets ship state, health etc while keeping the existing class.
-        /// </summary>
-        public void Reset()
-        {
-            ReviveDeadOrExploded();
-
-            //TODO: We should reload metadata and reapply it.
-        }
     }
 }
