@@ -1,4 +1,4 @@
-﻿using Cos.Engine.Sprite.SupportingClasses.Metadata;
+﻿using Cos.Engine.Sprite.Metadata;
 using Cos.Library.Mathematics;
 using NTDLS.Helpers;
 using SharpDX;

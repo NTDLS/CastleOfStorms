@@ -1,7 +1,6 @@
-﻿using Cos.GameEngine.Sprite.SupportingClasses.Metadata;
-using static Cos.Library.CosConstants;
+﻿using static Cos.Library.CosConstants;
 
-namespace Cos.Engine.Sprite.SupportingClasses.Metadata
+namespace Cos.Engine.Sprite.Metadata
 {
     internal class SpriteAnimationMetadata : BaseMetaData
     {

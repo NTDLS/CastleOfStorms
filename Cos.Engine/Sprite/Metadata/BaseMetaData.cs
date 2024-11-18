@@ -1,4 +1,4 @@
-﻿namespace Cos.GameEngine.Sprite.SupportingClasses.Metadata
+﻿namespace Cos.Engine.Sprite.Metadata
 {
     /// <summary>
     /// Contains sprite metadata.

@@ -1,5 +1,5 @@
 ﻿using Cos.Engine.Sprite._Superclass._Root;
-using Cos.GameEngine.Sprite.SupportingClasses.Metadata;
+using Cos.Engine.Sprite.Metadata;
 using Cos.Library;
 using Cos.Library.Mathematics;
 using SharpDX.Direct2D1;
