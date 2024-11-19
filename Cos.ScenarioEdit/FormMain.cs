@@ -3,7 +3,6 @@ using Cos.Engine.Sprite;
 using Cos.Engine.Sprite._Superclass._Root;
 using Cos.Library.Mathematics;
 using Cos.ScenarioEdit.Hardware;
-using Microsoft.VisualBasic;
 using NTDLS.Helpers;
 using ScenarioEdit.Tiling;
 using ScenarioEdit.Tiling.TreeNodes;
@@ -24,7 +23,7 @@ namespace ScenarioEdit
     {
         private Random _random = new();
         private readonly UndoBuffer _undoBuffer;
-        private readonly NTDLS.Semaphore.PessimisticCriticalResource<EngineCore> _engine;
+        private readonly EngineCore _engine;
         private readonly Control _drawingSurface;
         private PrimaryMode _currentPrimaryMode = PrimaryMode.Select;
         private Point? _mouseDownPos = null;
@@ -38,9 +37,8 @@ namespace ScenarioEdit
 
             _drawingSurface = new Control();
             Controls.Add(_drawingSurface);
-            var engineCode = new EngineCore(_drawingSurface, CosEngineInitializationType.None);
-            _engine = new NTDLS.Semaphore.PessimisticCriticalResource<EngineCore>(engineCode);
-            _undoBuffer = new UndoBuffer(engineCode);
+            _engine = new EngineCore(_drawingSurface, CosEngineInitializationType.None);
+            _undoBuffer = new UndoBuffer(_engine);
         }
 
         public FormMain(Screen screen)
@@ -61,12 +59,10 @@ namespace ScenarioEdit
             };
             splitContainerBody.Panel1.Controls.Add(_drawingSurface);
 
-            var engineCore = new EngineCore(_drawingSurface, CosEngineInitializationType.Edit);
+            _engine = new EngineCore(_drawingSurface, CosEngineInitializationType.Edit);
+            _undoBuffer = new UndoBuffer(_engine);
 
-            _engine = new NTDLS.Semaphore.PessimisticCriticalResource<EngineCore>(engineCore);
-            _undoBuffer = new UndoBuffer(engineCore);
-
-            engineCore.OnShutdown += (EngineCore sender) =>
+            _engine.OnShutdown += (EngineCore sender) =>
             {   //If the engine is stopped, close the main form.
                 Invoke((MethodInvoker)delegate
                 {
@@ -75,13 +71,13 @@ namespace ScenarioEdit
             };
 
             Shown += (object? sender, EventArgs e)
-                => engineCore.StartEngine();
+                => _engine.StartEngine();
 
             FormClosed += (sender, e)
-                => engineCore.ShutdownEngine();
+                => _engine.ShutdownEngine();
 
-            _drawingSurface.GotFocus += (object? sender, EventArgs e) => engineCore.Display.SetIsDrawingSurfaceFocused(true);
-            _drawingSurface.LostFocus += (object? sender, EventArgs e) => engineCore.Display.SetIsDrawingSurfaceFocused(false);
+            _drawingSurface.GotFocus += (object? sender, EventArgs e) => _engine.Display.SetIsDrawingSurfaceFocused(true);
+            _drawingSurface.LostFocus += (object? sender, EventArgs e) => _engine.Display.SetIsDrawingSurfaceFocused(false);
 
             _drawingSurface.Select();
             _drawingSurface.Focus();
@@ -163,27 +159,26 @@ namespace ScenarioEdit
 
         private void DrawingSurface_MouseDown(object? sender, MouseEventArgs e)
         {
-            _engine.Use(o =>
-            {
-                //Here we keep track of the position that the mouse was at when the mouse was pressed. We use this value for multiple purposes.
-                _mouseDownPos = new Point(e.X, e.Y);
-                _mouseDownRenderWindowPosition = o.Display.RenderWindowPosition.Clone();
-            });
+            //Here we keep track of the position that the mouse was at when the mouse was pressed. We use this value for multiple purposes.
+            _mouseDownPos = new Point(e.X, e.Y);
+            _mouseDownRenderWindowPosition = _engine.Display.RenderWindowPosition.Clone();
         }
 
         private void DrawingSurface_MouseMove(object? sender, MouseEventArgs e)
         {
-            _engine.Use(o =>
+            try
             {
+                _engine.WorldClockSemaphore.Wait();
+
                 if (e.Button == MouseButtons.Middle && _mouseDownPos != null && _mouseDownRenderWindowPosition != null)
                 {
                     //Used to drag the background offset (RenderWindowPosition).
-                    o.Display.RenderWindowPosition.X = _mouseDownRenderWindowPosition.X + _mouseDownPos.Value.X - e.X;
-                    o.Display.RenderWindowPosition.Y = _mouseDownRenderWindowPosition.Y + _mouseDownPos.Value.Y - e.Y;
+                    _engine.Display.RenderWindowPosition.X = _mouseDownRenderWindowPosition.X + _mouseDownPos.Value.X - e.X;
+                    _engine.Display.RenderWindowPosition.Y = _mouseDownRenderWindowPosition.Y + _mouseDownPos.Value.Y - e.Y;
                 }
 
-                var worldX = (e.X + o.Display.RenderWindowPosition.X);
-                var worldY = (e.Y + o.Display.RenderWindowPosition.Y);
+                var worldX = (e.X + _engine.Display.RenderWindowPosition.X);
+                var worldY = (e.Y + _engine.Display.RenderWindowPosition.Y);
 
                 var snappedX = (worldX + 16) - ((worldX + 16) % 32);
                 var snappedY = (worldY + 16) - ((worldY + 16) % 32);
@@ -202,7 +197,7 @@ namespace ScenarioEdit
 
                 #region De-Highlight and highlight hover tile(s).
 
-                var intersections = o.Sprites.Intersections(worldX, worldY, 1, 1);
+                var intersections = _engine.Sprites.Intersections(worldX, worldY, 1, 1);
 
                 foreach (var previousIntersection in _hoverIntersections)
                 {
@@ -229,15 +224,21 @@ namespace ScenarioEdit
                 {
                     toolStripStatusLabelDebug.Text = $"{_lastHoverTile.X},{_lastHoverTile.Y}:{_lastHoverTile.X + _lastHoverTile.Size.Width},{_lastHoverTile.Y + _lastHoverTile.Size.Height}";
                 }
-            });
+            }
+            finally
+            {
+                _engine.WorldClockSemaphore.Release();
+            }
         }
 
         private void DrawingSurface_MouseClick(object? sender, MouseEventArgs e)
         {
-            _engine.Use(o =>
+            try
             {
-                var worldX = (e.X + o.Display.RenderWindowPosition.X);
-                var worldY = (e.Y + o.Display.RenderWindowPosition.Y);
+                _engine.WorldClockSemaphore.Wait();
+
+                var worldX = (e.X + _engine.Display.RenderWindowPosition.X);
+                var worldY = (e.Y + _engine.Display.RenderWindowPosition.Y);
 
                 //Add tile.
                 if (_currentPrimaryMode == PrimaryMode.Insert && e.Button == MouseButtons.Left)
@@ -250,7 +251,7 @@ namespace ScenarioEdit
                 //Delete tile.
                 else if (_currentPrimaryMode == PrimaryMode.Insert && e.Button == MouseButtons.Right)
                 {
-                    var intersections = o.Sprites.Intersections(worldX, worldY, 1, 1);
+                    var intersections = _engine.Sprites.Intersections(worldX, worldY, 1, 1);
 
                     foreach (var intersection in intersections)
                     {
@@ -258,7 +259,11 @@ namespace ScenarioEdit
                         intersection.QueueForDelete();
                     }
                 }
-            });
+            }
+            finally
+            {
+                _engine.WorldClockSemaphore.Release();
+            }
         }
 
         /// <summary>
@@ -271,46 +276,45 @@ namespace ScenarioEdit
             //x = 256; //Debug
             //y = 256; //Debug
 
-            _engine.Use(o =>
+            if (treeViewTiles.SelectedNode == null)
             {
-                if (treeViewTiles.SelectedNode == null)
+                return;
+            }
+
+            if (treeViewTiles.SelectedNode is TreeNodeTilePack tilePack)
+            {
+                var undoItemCollection = new UndoItemCollection();
+
+                int randomIndex = _random.Next(tilePack.Meta.Center.Count);
+                string randomItem = tilePack.Meta.Center[randomIndex];
+
+                //If we are placing a tile on top of another TilePack tile from the same collection, then delete it.
+                var intersections = _engine.Sprites.Intersections(x, y, 1, 1)
+                    .Where(o => o is SpriteTilePackTile tilePackTile && tilePackTile.CollectionId == tilePack.Meta.CollectionId);
+                foreach (var intersection in _hoverIntersections)
                 {
-                    return;
+                    undoItemCollection.Record(intersection, ActionPerformed.Deleted);
+                    intersection.QueueForDelete();
                 }
 
-                if (treeViewTiles.SelectedNode is TreeNodeTilePack tilePack)
+                var spriteTile = new SpriteTilePackTile(_engine, new CosVector(x, y), Path.Join(tilePack.FullPath, randomItem), tilePack.Meta.CollectionId, TilePackTileType.Center)
                 {
-                    var undoItemCollection = new UndoItemCollection();
+                    TilePackTileType = TilePackTileType.Center,
+                };
 
-                    int randomIndex = _random.Next(tilePack.Meta.Center.Count);
-                    string randomItem = tilePack.Meta.Center[randomIndex];
+                undoItemCollection.Record(spriteTile, ActionPerformed.Created);
+                _engine.Sprites.Add(spriteTile);
 
-                    //If we are placing a tile on top of another TilePack tile from the same collection, then delete it.
-                    var intersections = o.Sprites.Intersections(x, y, 1, 1)
-                        .Where(o => o is SpriteTilePackTile tilePackTile && tilePackTile.CollectionId == tilePack.Meta.CollectionId);
-                    foreach (var intersection in _hoverIntersections)
-                    {
-                        undoItemCollection.Record(intersection, ActionPerformed.Deleted);
-                        intersection.QueueForDelete();
-                    }
+                var touched = new HashSet<SpriteTilePackTile>();
 
-                    var spriteTile = new SpriteTilePackTile(o, new CosVector(x, y), Path.Join(tilePack.FullPath, randomItem), tilePack.Meta.CollectionId, TilePackTileType.Center)
-                    {
-                        TilePackTileType = TilePackTileType.Center,
-                    };
+                EncaseTilePackTile(tilePack, spriteTile, touched, undoItemCollection);
 
-                    undoItemCollection.Record(spriteTile, ActionPerformed.Created);
-                    o.Sprites.Add(spriteTile);
-
-                    EncaseTilePackTile(tilePack, spriteTile, undoItemCollection);
-
-                    _undoBuffer.Record(undoItemCollection);
-                }
-                else
-                {
-                    //...individual tiles?
-                }
-            });
+                _undoBuffer.Record(undoItemCollection);
+            }
+            else
+            {
+                //...individual tiles?
+            }
         }
 
         /*
@@ -318,30 +322,27 @@ namespace ScenarioEdit
         {
             var neighbors = new List<SpriteTilePackTile>();
 
-            _engine.Use(o =>
-            {
-                List<CosVector> offsets =
-                [
-                    new CosVector(-1, -1), //top-left
-                    new CosVector(0, -1), //top
-                    new CosVector(+33, -1), //top-right
-                    new CosVector(+33, 0), //right
-                    new CosVector(+33, +33), //bottom-right
-                    new CosVector(0, +33), //bottom
-                    new CosVector(0, +33), //bottom-left
-                    new CosVector(-1, +33), //left
-                ];
+            List<CosVector> offsets =
+            [
+                new CosVector(-1, -1), //top-left
+                new CosVector(0, -1), //top
+                new CosVector(+33, -1), //top-right
+                new CosVector(+33, 0), //right
+                new CosVector(+33, +33), //bottom-right
+                new CosVector(0, +33), //bottom
+                new CosVector(0, +33), //bottom-left
+                new CosVector(-1, +33), //left
+            ];
 
-                foreach (var offset in offsets)
+            foreach (var offset in offsets)
+            {
+                var collision = _engine.Sprites.Intersections(tile.X + offset.X, tile.Y + offset.Y, 1, 1)
+                    .Where(o => o is SpriteTilePackTile tilePackTile && tilePackTile.CollectionId == tilePack.Meta.CollectionId).FirstOrDefault();
+                if (collision is SpriteTilePackTile collisionTile)
                 {
-                    var collision = o.Sprites.Intersections(tile.X + offset.X, tile.Y + offset.Y, 1, 1)
-                        .Where(o => o is SpriteTilePackTile tilePackTile && tilePackTile.CollectionId == tilePack.Meta.CollectionId).FirstOrDefault();
-                    if (collision is SpriteTilePackTile collisionTile)
-                    {
-                        neighbors.Add(collisionTile);
-                    }
+                    neighbors.Add(collisionTile);
                 }
-            });
+            }
 
             return neighbors;
         }
@@ -354,44 +355,41 @@ namespace ScenarioEdit
         {
             var neighbors = new TilePackNeighbors();
 
-            _engine.Use(o =>
-            {
-                #region Get tile neighbors.
+            #region Get tile neighbors.
 
-                neighbors.TopLeft = o.Sprites.Intersections(tile.Location + NeighborOffsets.TopLeft, CosVector.One)
-                    .Where(o => o is SpriteTilePackTile tilePackTile && tilePackTile.CollectionId == tilePack.Meta.CollectionId)
-                    .FirstOrDefault() as SpriteTilePackTile;
+            neighbors.TopLeft = _engine.Sprites.Intersections(tile.Location + NeighborOffsets.TopLeft, CosVector.One)
+                .Where(o => o is SpriteTilePackTile tilePackTile && tilePackTile.CollectionId == tilePack.Meta.CollectionId)
+                .FirstOrDefault() as SpriteTilePackTile;
 
-                neighbors.Top = o.Sprites.Intersections(tile.Location + NeighborOffsets.Top, CosVector.One)
-                    .Where(o => o is SpriteTilePackTile tilePackTile && tilePackTile.CollectionId == tilePack.Meta.CollectionId)
-                    .FirstOrDefault() as SpriteTilePackTile;
+            neighbors.Top = _engine.Sprites.Intersections(tile.Location + NeighborOffsets.Top, CosVector.One)
+                .Where(o => o is SpriteTilePackTile tilePackTile && tilePackTile.CollectionId == tilePack.Meta.CollectionId)
+                .FirstOrDefault() as SpriteTilePackTile;
 
-                neighbors.TopRight = o.Sprites.Intersections(tile.Location + NeighborOffsets.TopRight, CosVector.One)
-                    .Where(o => o is SpriteTilePackTile tilePackTile && tilePackTile.CollectionId == tilePack.Meta.CollectionId)
-                    .FirstOrDefault() as SpriteTilePackTile;
+            neighbors.TopRight = _engine.Sprites.Intersections(tile.Location + NeighborOffsets.TopRight, CosVector.One)
+                .Where(o => o is SpriteTilePackTile tilePackTile && tilePackTile.CollectionId == tilePack.Meta.CollectionId)
+                .FirstOrDefault() as SpriteTilePackTile;
 
-                neighbors.Right = o.Sprites.Intersections(tile.Location + NeighborOffsets.Right, CosVector.One)
-                    .Where(o => o is SpriteTilePackTile tilePackTile && tilePackTile.CollectionId == tilePack.Meta.CollectionId)
-                    .FirstOrDefault() as SpriteTilePackTile;
+            neighbors.Right = _engine.Sprites.Intersections(tile.Location + NeighborOffsets.Right, CosVector.One)
+                .Where(o => o is SpriteTilePackTile tilePackTile && tilePackTile.CollectionId == tilePack.Meta.CollectionId)
+                .FirstOrDefault() as SpriteTilePackTile;
 
-                neighbors.BottomRight = o.Sprites.Intersections(tile.Location + NeighborOffsets.BottomRight, CosVector.One)
-                    .Where(o => o is SpriteTilePackTile tilePackTile && tilePackTile.CollectionId == tilePack.Meta.CollectionId)
-                    .FirstOrDefault() as SpriteTilePackTile;
+            neighbors.BottomRight = _engine.Sprites.Intersections(tile.Location + NeighborOffsets.BottomRight, CosVector.One)
+                .Where(o => o is SpriteTilePackTile tilePackTile && tilePackTile.CollectionId == tilePack.Meta.CollectionId)
+                .FirstOrDefault() as SpriteTilePackTile;
 
-                neighbors.Bottom = o.Sprites.Intersections(tile.Location + NeighborOffsets.Bottom, CosVector.One)
-                    .Where(o => o is SpriteTilePackTile tilePackTile && tilePackTile.CollectionId == tilePack.Meta.CollectionId)
-                    .FirstOrDefault() as SpriteTilePackTile;
+            neighbors.Bottom = _engine.Sprites.Intersections(tile.Location + NeighborOffsets.Bottom, CosVector.One)
+                .Where(o => o is SpriteTilePackTile tilePackTile && tilePackTile.CollectionId == tilePack.Meta.CollectionId)
+                .FirstOrDefault() as SpriteTilePackTile;
 
-                neighbors.BottomLeft = o.Sprites.Intersections(tile.Location + NeighborOffsets.BottomLeft, CosVector.One)
-                    .Where(o => o is SpriteTilePackTile tilePackTile && tilePackTile.CollectionId == tilePack.Meta.CollectionId)
-                    .FirstOrDefault() as SpriteTilePackTile;
+            neighbors.BottomLeft = _engine.Sprites.Intersections(tile.Location + NeighborOffsets.BottomLeft, CosVector.One)
+                .Where(o => o is SpriteTilePackTile tilePackTile && tilePackTile.CollectionId == tilePack.Meta.CollectionId)
+                .FirstOrDefault() as SpriteTilePackTile;
 
-                neighbors.Left = o.Sprites.Intersections(tile.Location + NeighborOffsets.Left, CosVector.One)
-                    .Where(o => o is SpriteTilePackTile tilePackTile && tilePackTile.CollectionId == tilePack.Meta.CollectionId)
-                    .FirstOrDefault() as SpriteTilePackTile;
+            neighbors.Left = _engine.Sprites.Intersections(tile.Location + NeighborOffsets.Left, CosVector.One)
+                .Where(o => o is SpriteTilePackTile tilePackTile && tilePackTile.CollectionId == tilePack.Meta.CollectionId)
+                .FirstOrDefault() as SpriteTilePackTile;
 
-                #endregion
-            });
+            #endregion
 
             return neighbors;
         }
@@ -402,135 +400,140 @@ namespace ScenarioEdit
         /// <summary>
         /// This function is used to remove all edge neighbors and replace them where they are missing.
         /// </summary>
-        private void EncaseTilePackTile(TreeNodeTilePack tilePack, SpriteTilePackTile tile, UndoItemCollection undoItemCollection)
+        private void EncaseTilePackTile(TreeNodeTilePack tilePack, SpriteTilePackTile tile, HashSet<SpriteTilePackTile> touched, UndoItemCollection undoItemCollection)
         {
-            _engine.Use(o =>
-            {
-                var neighbors = GetTilePackTileNeighbors(tilePack, tile);
+            var neighbors = GetTilePackTileNeighbors(tilePack, tile);
 
-                //Delete all edge neighbors.
-                foreach (var neighbor in neighbors.All.Where(o => o.TilePackTileType != TilePackTileType.Center))
+            //Delete all edge neighbors.
+            foreach (var neighbor in neighbors.All)
+            {
+                if (neighbor.TilePackTileType != TilePackTileType.Center)
                 {
                     undoItemCollection.Record(neighbor, ActionPerformed.Deleted);
                     neighbor.QueueForDelete();
                 }
-
-                #region Add tile edges.
-
-                //Right
-                if (neighbors.Right?.TilePackTileType != TilePackTileType.Center)
+                else if (touched.Contains(neighbor) == false)
                 {
-                    int randomIndex = _random.Next(tilePack.Meta.Right.Count);
-                    string randomItem = tilePack.Meta.Right[randomIndex];
-
-                    var spriteTile = new SpriteTilePackTile(o, tile.Location + NeighborOffsets.Right, Path.Join(tilePack.FullPath, randomItem), tilePack.Meta.CollectionId, TilePackTileType.Center)
-                    {
-                        TilePackTileType = TilePackTileType.Right
-                    };
-                    o.Sprites.Add(spriteTile);
-                    undoItemCollection.Record(spriteTile, ActionPerformed.Created);
+                    touched.Add(neighbor);
+                    EncaseTilePackTile(tilePack, neighbor, touched, undoItemCollection);
                 }
+            }
 
-                //TopRight
-                if (neighbors.TopRight?.TilePackTileType != TilePackTileType.Center)
+            #region Add tile edges.
+
+            //Right
+            if (neighbors.Right?.TilePackTileType != TilePackTileType.Center)
+            {
+                int randomIndex = _random.Next(tilePack.Meta.Right.Count);
+                string randomItem = tilePack.Meta.Right[randomIndex];
+
+                var spriteTile = new SpriteTilePackTile(_engine, tile.Location + NeighborOffsets.Right, Path.Join(tilePack.FullPath, randomItem), tilePack.Meta.CollectionId, TilePackTileType.Center)
                 {
-                    int randomIndex = _random.Next(tilePack.Meta.TopRight.Count);
-                    string randomItem = tilePack.Meta.TopRight[randomIndex];
+                    TilePackTileType = TilePackTileType.Right
+                };
+                _engine.Sprites.Add(spriteTile);
+                undoItemCollection.Record(spriteTile, ActionPerformed.Created);
+            }
 
-                    var spriteTile = new SpriteTilePackTile(o, tile.Location + NeighborOffsets.TopRight, Path.Join(tilePack.FullPath, randomItem), tilePack.Meta.CollectionId, TilePackTileType.Center)
-                    {
-                        TilePackTileType = TilePackTileType.TopRight
-                    };
-                    o.Sprites.Add(spriteTile);
-                    undoItemCollection.Record(spriteTile, ActionPerformed.Created);
-                }
+            //TopRight
+            if (neighbors.TopRight?.TilePackTileType != TilePackTileType.Center)
+            {
+                int randomIndex = _random.Next(tilePack.Meta.TopRight.Count);
+                string randomItem = tilePack.Meta.TopRight[randomIndex];
 
-                //BottomRight
-                if (neighbors.BottomRight?.TilePackTileType != TilePackTileType.Center)
+                var spriteTile = new SpriteTilePackTile(_engine, tile.Location + NeighborOffsets.TopRight, Path.Join(tilePack.FullPath, randomItem), tilePack.Meta.CollectionId, TilePackTileType.Center)
                 {
-                    int randomIndex = _random.Next(tilePack.Meta.BottomRight.Count);
-                    string randomItem = tilePack.Meta.BottomRight[randomIndex];
+                    TilePackTileType = TilePackTileType.TopRight
+                };
+                _engine.Sprites.Add(spriteTile);
+                undoItemCollection.Record(spriteTile, ActionPerformed.Created);
+            }
 
-                    var spriteTile = new SpriteTilePackTile(o, tile.Location + NeighborOffsets.BottomRight, Path.Join(tilePack.FullPath, randomItem), tilePack.Meta.CollectionId, TilePackTileType.Center)
-                    {
-                        TilePackTileType = TilePackTileType.BottomRight
-                    };
-                    o.Sprites.Add(spriteTile);
-                    undoItemCollection.Record(spriteTile, ActionPerformed.Created);
-                }
+            //BottomRight
+            if (neighbors.BottomRight?.TilePackTileType != TilePackTileType.Center)
+            {
+                int randomIndex = _random.Next(tilePack.Meta.BottomRight.Count);
+                string randomItem = tilePack.Meta.BottomRight[randomIndex];
 
-                //Left
-                if (neighbors.Left?.TilePackTileType != TilePackTileType.Center)
+                var spriteTile = new SpriteTilePackTile(_engine, tile.Location + NeighborOffsets.BottomRight, Path.Join(tilePack.FullPath, randomItem), tilePack.Meta.CollectionId, TilePackTileType.Center)
                 {
-                    int randomIndex = _random.Next(tilePack.Meta.Left.Count);
-                    string randomItem = tilePack.Meta.Left[randomIndex];
+                    TilePackTileType = TilePackTileType.BottomRight
+                };
+                _engine.Sprites.Add(spriteTile);
+                undoItemCollection.Record(spriteTile, ActionPerformed.Created);
+            }
 
-                    var spriteTile = new SpriteTilePackTile(o, tile.Location + NeighborOffsets.Left, Path.Join(tilePack.FullPath, randomItem), tilePack.Meta.CollectionId, TilePackTileType.Center)
-                    {
-                        TilePackTileType = TilePackTileType.Left
-                    };
-                    o.Sprites.Add(spriteTile);
-                    undoItemCollection.Record(spriteTile, ActionPerformed.Created);
-                }
+            //Left
+            if (neighbors.Left?.TilePackTileType != TilePackTileType.Center)
+            {
+                int randomIndex = _random.Next(tilePack.Meta.Left.Count);
+                string randomItem = tilePack.Meta.Left[randomIndex];
 
-                //TopLeft
-                if (neighbors.TopLeft?.TilePackTileType != TilePackTileType.Center)
+                var spriteTile = new SpriteTilePackTile(_engine, tile.Location + NeighborOffsets.Left, Path.Join(tilePack.FullPath, randomItem), tilePack.Meta.CollectionId, TilePackTileType.Center)
                 {
-                    int randomIndex = _random.Next(tilePack.Meta.TopLeft.Count);
-                    string randomItem = tilePack.Meta.TopLeft[randomIndex];
+                    TilePackTileType = TilePackTileType.Left
+                };
+                _engine.Sprites.Add(spriteTile);
+                undoItemCollection.Record(spriteTile, ActionPerformed.Created);
+            }
 
-                    var spriteTile = new SpriteTilePackTile(o, tile.Location + NeighborOffsets.TopLeft, Path.Join(tilePack.FullPath, randomItem), tilePack.Meta.CollectionId, TilePackTileType.Center)
-                    {
-                        TilePackTileType = TilePackTileType.TopLeft
-                    };
-                    o.Sprites.Add(spriteTile);
-                    undoItemCollection.Record(spriteTile, ActionPerformed.Created);
-                }
+            //TopLeft
+            if (neighbors.TopLeft?.TilePackTileType != TilePackTileType.Center)
+            {
+                int randomIndex = _random.Next(tilePack.Meta.TopLeft.Count);
+                string randomItem = tilePack.Meta.TopLeft[randomIndex];
 
-                //BottomLeft
-                if (neighbors.BottomLeft?.TilePackTileType != TilePackTileType.Center)
+                var spriteTile = new SpriteTilePackTile(_engine, tile.Location + NeighborOffsets.TopLeft, Path.Join(tilePack.FullPath, randomItem), tilePack.Meta.CollectionId, TilePackTileType.Center)
                 {
-                    int randomIndex = _random.Next(tilePack.Meta.BottomLeft.Count);
-                    string randomItem = tilePack.Meta.BottomLeft[randomIndex];
+                    TilePackTileType = TilePackTileType.TopLeft
+                };
+                _engine.Sprites.Add(spriteTile);
+                undoItemCollection.Record(spriteTile, ActionPerformed.Created);
+            }
 
-                    var spriteTile = new SpriteTilePackTile(o, tile.Location + NeighborOffsets.BottomLeft, Path.Join(tilePack.FullPath, randomItem), tilePack.Meta.CollectionId, TilePackTileType.Center)
-                    {
-                        TilePackTileType = TilePackTileType.BottomLeft
-                    };
-                    o.Sprites.Add(spriteTile);
-                    undoItemCollection.Record(spriteTile, ActionPerformed.Created);
-                }
+            //BottomLeft
+            if (neighbors.BottomLeft?.TilePackTileType != TilePackTileType.Center)
+            {
+                int randomIndex = _random.Next(tilePack.Meta.BottomLeft.Count);
+                string randomItem = tilePack.Meta.BottomLeft[randomIndex];
 
-                //Top
-                if (neighbors.Top?.TilePackTileType != TilePackTileType.Center)
+                var spriteTile = new SpriteTilePackTile(_engine, tile.Location + NeighborOffsets.BottomLeft, Path.Join(tilePack.FullPath, randomItem), tilePack.Meta.CollectionId, TilePackTileType.Center)
                 {
-                    int randomIndex = _random.Next(tilePack.Meta.Top.Count);
-                    string randomItem = tilePack.Meta.Top[randomIndex];
+                    TilePackTileType = TilePackTileType.BottomLeft
+                };
+                _engine.Sprites.Add(spriteTile);
+                undoItemCollection.Record(spriteTile, ActionPerformed.Created);
+            }
 
-                    var spriteTile = new SpriteTilePackTile(o, tile.Location + NeighborOffsets.Top, Path.Join(tilePack.FullPath, randomItem), tilePack.Meta.CollectionId, TilePackTileType.Center)
-                    {
-                        TilePackTileType = TilePackTileType.Top
-                    };
-                    o.Sprites.Add(spriteTile);
-                    undoItemCollection.Record(spriteTile, ActionPerformed.Created);
-                }
+            //Top
+            if (neighbors.Top?.TilePackTileType != TilePackTileType.Center)
+            {
+                int randomIndex = _random.Next(tilePack.Meta.Top.Count);
+                string randomItem = tilePack.Meta.Top[randomIndex];
 
-                //Bottom
-                if (neighbors.Bottom?.TilePackTileType != TilePackTileType.Center)
+                var spriteTile = new SpriteTilePackTile(_engine, tile.Location + NeighborOffsets.Top, Path.Join(tilePack.FullPath, randomItem), tilePack.Meta.CollectionId, TilePackTileType.Center)
                 {
-                    int randomIndex = _random.Next(tilePack.Meta.Bottom.Count);
-                    string randomItem = tilePack.Meta.Bottom[randomIndex];
+                    TilePackTileType = TilePackTileType.Top
+                };
+                _engine.Sprites.Add(spriteTile);
+                undoItemCollection.Record(spriteTile, ActionPerformed.Created);
+            }
 
-                    var spriteTile = new SpriteTilePackTile(o, tile.Location + NeighborOffsets.Bottom, Path.Join(tilePack.FullPath, randomItem), tilePack.Meta.CollectionId, TilePackTileType.Center)
-                    {
-                        TilePackTileType = TilePackTileType.Bottom
-                    };
-                    o.Sprites.Add(spriteTile);
-                    undoItemCollection.Record(spriteTile, ActionPerformed.Created);
-                }
+            //Bottom
+            if (neighbors.Bottom?.TilePackTileType != TilePackTileType.Center)
+            {
+                int randomIndex = _random.Next(tilePack.Meta.Bottom.Count);
+                string randomItem = tilePack.Meta.Bottom[randomIndex];
 
-                #endregion
-            });
+                var spriteTile = new SpriteTilePackTile(_engine, tile.Location + NeighborOffsets.Bottom, Path.Join(tilePack.FullPath, randomItem), tilePack.Meta.CollectionId, TilePackTileType.Center)
+                {
+                    TilePackTileType = TilePackTileType.Bottom
+                };
+                _engine.Sprites.Add(spriteTile);
+                undoItemCollection.Record(spriteTile, ActionPerformed.Created);
+            }
+
+            #endregion
         }
 
         #region Populate matrials/assets.

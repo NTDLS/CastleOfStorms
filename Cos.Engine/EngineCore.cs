@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using NTDLS.Helpers;
 using System;
 using System.Drawing;
+using System.Threading;
 using System.Windows.Forms;
 using static Cos.Library.CosConstants;
 
@@ -27,6 +28,8 @@ namespace Cos.Engine
         #endregion
 
         #region Public properties.
+
+        public SemaphoreSlim WorldClockSemaphore { get; private set; } = new(1, 1);
 
         public CosEngineInitializationType ExecutionType { get; private set; }
 
