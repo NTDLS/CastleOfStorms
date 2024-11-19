@@ -1,21 +1,35 @@
-﻿namespace Cos.Library
+﻿using Cos.Library.Mathematics;
+
+namespace Cos.Library
 {
     public static class CosConstants
     {
         public static string FriendlyName = "Castle of Storms";
 
-        public enum TilePackTileType
+        public static class NeighborOffsets
         {
-            Top,
-            Left,
-            Center,
-            Bottom,
-            BottomLeft,
-            BottomRight,
-            TopLeft,
-            TopRight
+            public static CosVector TopLeft = new CosVector(-32, -32); //top-left
+            public static CosVector Top = new CosVector(0, -32); //top
+            public static CosVector TopRight = new CosVector(+32, -32); //top-right
+            public static CosVector Right = new CosVector(+32, 0); //right
+            public static CosVector BottomRight = new CosVector(+32, +32); //bottom-right
+            public static CosVector Bottom = new CosVector(0, +32); //bottom
+            public static CosVector BottomLeft = new CosVector(-32, +32); //bottom-left
+            public static CosVector Left = new CosVector(-32, 0); //left
         }
 
+        public enum TilePackTileType
+        {
+            TopLeft,
+            Top,
+            TopRight,
+            Right,
+            BottomRight,
+            Bottom,
+            BottomLeft,
+            Left,
+            Center
+        }
 
         public enum CosEngineInitializationType
         {

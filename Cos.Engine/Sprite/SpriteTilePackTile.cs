@@ -1,4 +1,5 @@
 ﻿using Cos.Engine.Sprite._Superclass._Root;
+using Cos.Library.Mathematics;
 using System;
 using static Cos.Library.CosConstants;
 
@@ -13,9 +14,11 @@ namespace Cos.Engine.Sprite
 
         public TilePackTileType TilePackTileType { get; set; }
 
-        public SpriteTilePackTile(EngineCore engine, string imagePath, Guid collectionId, TilePackTileType tilePackTileType)
+        public SpriteTilePackTile(EngineCore engine, CosVector location, string imagePath, Guid collectionId, TilePackTileType tilePackTileType)
             : base(engine)
         {
+            X = location.X;
+            Y = location.Y;
             CollectionId = collectionId;
             TilePackTileType = tilePackTileType;
             SetImage(imagePath);
