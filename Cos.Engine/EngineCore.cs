@@ -29,8 +29,6 @@ namespace Cos.Engine
 
         #region Public properties.
 
-        public SemaphoreSlim WorldClockSemaphore { get; private set; } = new(1, 1);
-
         public CosEngineInitializationType ExecutionType { get; private set; }
 
         public bool IsRunning { get; private set; } = false;
@@ -138,6 +136,53 @@ namespace Cos.Engine
 
             return JsonConvert.DeserializeObject<CosEngineSettings>(engineSettingsText).EnsureNotNull();
         }
+
+        #region WorldClock Semaphore.
+
+        /// <summary>
+        /// Delegate for executions that do not require a return value.
+        /// </summary>
+        public delegate void WorldClockSemaphoreDelegate();
+
+        private readonly Semaphore _worldClockSemaphore = new(1, 1);
+
+        /// <summary>
+        /// Used to ensure that sprites aren't added/deleted while the scene is being executed or rendered.
+        /// </summary>
+        public void UseWorldClock(WorldClockSemaphoreDelegate function)
+        {
+            try
+            {
+                _worldClockSemaphore.WaitOne();
+                function();
+            }
+            finally
+            {
+                _worldClockSemaphore.Release();
+            }
+        }
+
+        /// <summary>
+        /// Used to ensure that sprites aren't added/deleted while the scene is being executed or rendered.
+        /// </summary>
+        public bool TryUseWorldClock(TimeSpan timeout, WorldClockSemaphoreDelegate function)
+        {
+            if (_worldClockSemaphore.WaitOne(timeout))
+            {
+                try
+                {
+                    function();
+                    return true;
+                }
+                finally
+                {
+                    _worldClockSemaphore.Release();
+                }
+            }
+            return false;
+        }
+
+        #endregion
 
         public static void SaveSettings(CosEngineSettings settings)
         {

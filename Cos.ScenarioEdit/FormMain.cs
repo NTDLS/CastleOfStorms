@@ -166,10 +166,8 @@ namespace ScenarioEdit
 
         private void DrawingSurface_MouseMove(object? sender, MouseEventArgs e)
         {
-            try
+            _engine.UseWorldClock(() =>
             {
-                _engine.WorldClockSemaphore.Wait();
-
                 if (e.Button == MouseButtons.Middle && _mouseDownPos != null && _mouseDownRenderWindowPosition != null)
                 {
                     //Used to drag the background offset (RenderWindowPosition).
@@ -224,19 +222,13 @@ namespace ScenarioEdit
                 {
                     toolStripStatusLabelDebug.Text = $"{_lastHoverTile.X},{_lastHoverTile.Y}:{_lastHoverTile.X + _lastHoverTile.Size.Width},{_lastHoverTile.Y + _lastHoverTile.Size.Height}";
                 }
-            }
-            finally
-            {
-                _engine.WorldClockSemaphore.Release();
-            }
+            });
         }
 
         private void DrawingSurface_MouseClick(object? sender, MouseEventArgs e)
         {
-            try
+            _engine.UseWorldClock(() =>
             {
-                _engine.WorldClockSemaphore.Wait();
-
                 var worldX = (e.X + _engine.Display.RenderWindowPosition.X);
                 var worldY = (e.Y + _engine.Display.RenderWindowPosition.Y);
 
@@ -259,11 +251,7 @@ namespace ScenarioEdit
                         intersection.QueueForDelete();
                     }
                 }
-            }
-            finally
-            {
-                _engine.WorldClockSemaphore.Release();
-            }
+            });
         }
 
         /// <summary>

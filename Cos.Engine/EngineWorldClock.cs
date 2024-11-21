@@ -125,40 +125,34 @@ namespace Cos.Engine
 
             while (_shutdown == false)
             {
-                if (_engine.WorldClockSemaphore.Wait(100))
+                float epoch;
+
+                _engine.TryUseWorldClock(TimeSpan.Zero, () =>
                 {
-                    var epoch = (float)(elapsedEpochMilliseconds / _engine.Settings.MillisecondPerEpoch);
+                    epoch = (float)(elapsedEpochMilliseconds / _engine.Settings.MillisecondPerEpoch);
 
                     if (!_isPaused) ExecuteWorldClockTick(epoch);
 
                     _engine.RenderEverything();
+                });
 
-                    _engine.WorldClockSemaphore.Release();
+                if (_engine.Settings.VerticalSync == false)
+                {
+                    var elapsedFrameTime = _engine.Display.FrameCounter.ElapsedMicroseconds;
 
-                    if (_engine.Settings.VerticalSync == false)
+                    // Enforce the framerate by figuring out how long it took to render the frame,
+                    //  then spin for the difference between how long we wanted it to take.
+                    while (_engine.Display.FrameCounter.ElapsedMicroseconds - elapsedFrameTime < targetTimePerFrameMicroseconds - elapsedFrameTime)
                     {
-                        var elapsedFrameTime = _engine.Display.FrameCounter.ElapsedMicroseconds;
-
-                        // Enforce the framerate by figuring out how long it took to render the frame,
-                        //  then spin for the difference between how long we wanted it to take.
-                        while (_engine.Display.FrameCounter.ElapsedMicroseconds - elapsedFrameTime < targetTimePerFrameMicroseconds - elapsedFrameTime)
-                        {
-                            if (_engine.Settings.YieldRemainingFrameTime) Thread.Yield();
-                        }
+                        if (_engine.Settings.YieldRemainingFrameTime) Thread.Yield();
                     }
-
-                    if (_isPaused) Thread.Yield();
-
-                    if (_engine.ExecutionType == CosConstants.CosEngineInitializationType.Edit)
-                    {
-                        Thread.Sleep(100);
-                        Thread.Yield();
-                    }
-
-                    elapsedEpochMilliseconds = _engine.Display.FrameCounter.ElapsedMilliseconds;
-
-                    _engine.Display.FrameCounter.Calculate();
                 }
+
+                if (_isPaused) Thread.Yield();
+
+                elapsedEpochMilliseconds = _engine.Display.FrameCounter.ElapsedMilliseconds;
+
+                _engine.Display.FrameCounter.Calculate();
             }
         }
 
