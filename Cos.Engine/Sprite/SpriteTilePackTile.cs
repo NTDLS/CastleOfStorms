@@ -14,13 +14,43 @@ namespace Cos.Engine.Sprite
 
         public TilePackTileType TilePackTileType { get; set; }
 
-        public SpriteTilePackTile(EngineCore engine, CosVector location, string imagePath, Guid collectionId, TilePackTileType tilePackTileType)
+        public SpriteTilePackTile(EngineCore engine, CosVector centerTileLocation, TilePackTileType tilePackTileType, string imagePath, Guid collectionId)
             : base(engine)
         {
-            X = location.X;
-            Y = location.Y;
             CollectionId = collectionId;
             TilePackTileType = tilePackTileType;
+
+            switch (tilePackTileType)
+            {
+                case TilePackTileType.Top:
+                    centerTileLocation += NeighborOffsets.Top;
+                    break;
+                case TilePackTileType.TopLeft:
+                    centerTileLocation += NeighborOffsets.TopLeft;
+                    break;
+                case TilePackTileType.TopRight:
+                    centerTileLocation += NeighborOffsets.TopRight;
+                    break;
+                case TilePackTileType.Right:
+                    centerTileLocation += NeighborOffsets.Right;
+                    break;
+                case TilePackTileType.BottomRight:
+                    centerTileLocation += NeighborOffsets.BottomRight;
+                    break;
+                case TilePackTileType.Bottom:
+                    centerTileLocation += NeighborOffsets.Bottom;
+                    break;
+                case TilePackTileType.BottomLeft:
+                    centerTileLocation += NeighborOffsets.BottomLeft;
+                    break;
+                case TilePackTileType.Left:
+                    centerTileLocation += NeighborOffsets.Left;
+                    break;
+            }
+
+            X = centerTileLocation.X;
+            Y = centerTileLocation.Y;
+
             SetImage(imagePath);
         }
 
